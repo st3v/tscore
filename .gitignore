@@ -13,6 +13,8 @@ project/plugins/project/
 .scala_dependencies
 
 # IDEA stuff
-.target/
 .idea
 .idea_modules
+
+# mac
+.DS_Store
