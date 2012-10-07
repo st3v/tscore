@@ -1,11 +1,11 @@
 package org.tscore.test.graph
 
-import org.tscore.graph.repository.ActorRepository
+import org.tscore.graph.repository.{SubjectRepository, ActorRepository}
 import org.tscore.graph.model.Actor
 import org.tscore.graph.util.Conversions._
 
 class ActorSpec extends BaseRepositorySpec[Actor] {
-  def getRepository  : ActorRepository = ctx.getBean(classOf[ActorRepository])
+  def getRepository : ActorRepository = ctx.getBean(classOf[ActorRepository])
 
   test("save and find single actor") {
     val repository = getRepository
@@ -22,7 +22,7 @@ class ActorSpec extends BaseRepositorySpec[Actor] {
       assert(fetched === stored, "unexpected actor fetched")
     }
 
-    val subjectRepo = ctx.getBean(classOf[ActorRepository])
+    val subjectRepo = ctx.getBean(classOf[SubjectRepository])
     val subject = subjectRepo.findOne(stored.id)
     assert(subject != null, "no subject with id " + stored.id + " found")
   }
