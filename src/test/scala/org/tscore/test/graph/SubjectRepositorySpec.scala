@@ -1,4 +1,4 @@
-package org.tscor.graph
+package org.tscore.test.graph
 
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.springframework.context.support.GenericXmlApplicationContext
