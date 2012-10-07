@@ -21,3 +21,5 @@ resolvers += "Spring Milestone Repository" at "http://repo.springsource.org/libs
 resolvers += "Spring Snapshot Repository" at "https://repo.springsource.org/libs-snapshot"
 
 resolvers += "Spring Release Repository" at "https://repo.springsource.org/libs-release"
+
+parallelExecution in Test := false

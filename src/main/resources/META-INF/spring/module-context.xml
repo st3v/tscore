@@ -15,7 +15,7 @@
     <context:annotation-config/>
 
     <neo4j:config storeDirectory="target/neo4j-db"/>
-    <neo4j:repositories base-package="org.tscore.graph" />
+    <neo4j:repositories base-package="org.tscore.graph.repository" />
 
     <tx:annotation-driven mode="aspectj"/>
 

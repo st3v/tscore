@@ -1,26 +1,12 @@
 package org.tscore.test.graph
 
-import org.scalatest.{BeforeAndAfter, FunSuite}
-import org.springframework.context.support.GenericXmlApplicationContext
-import org.tscore.graph.{Subject, SubjectRepository}
+import org.tscore.graph.repository.SubjectRepository
+import org.tscore.graph.model.Subject
 import org.tscore.graph.util.Conversions._
 import collection.mutable
 
-class SubjectRepositorySpec extends FunSuite with BeforeAndAfter {
-  var ctx : GenericXmlApplicationContext = null
-
-  def getRepository : SubjectRepository = {
-    ctx.getBean(classOf[SubjectRepository])
-  }
-
-  before {
-    ctx = new GenericXmlApplicationContext("classpath*:/META-INF/spring/module-context.xml")
-    getRepository.deleteAll()
-  }
-
-  after {
-    ctx.close()
-  }
+class SubjectSpec extends BaseRepositorySpec[Subject] {
+  def getRepository : SubjectRepository = ctx.getBean(classOf[SubjectRepository])
 
   test("save and find single subject") {
     val repository = getRepository

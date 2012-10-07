@@ -10,7 +10,8 @@ class ScalaCloseableIterable[T](ci: ClosableIterable[T]) {
         val t = i.next()
         f(t)
       }
-    } finally {
+    }
+    finally {
       ci.close()
     }
   }
