@@ -14,7 +14,20 @@
     <context:spring-configured/>
     <context:annotation-config/>
 
-    <neo4j:config storeDirectory="target/neo4j-db"/>
+    <!-- REST Connection to Neo4j server -->
+    <!--<bean id="graphDatabaseService" class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">-->
+        <!--<constructor-arg value="http://localhost:7474/db/data/" />-->
+    <!--</bean>-->
+
+    <!-- local store, let's use this for unit tests -->
+    <bean id="graphDatabaseService" class="org.neo4j.kernel.EmbeddedGraphDatabase"
+          destroy-method="shutdown">
+        <constructor-arg index="0" value="target/tscore.db" />
+    </bean>
+
+    <!-- Neo4j configuration (creates Neo4jTemplate) -->
+    <neo4j:config graphDatabaseService="graphDatabaseService" />
+
     <neo4j:repositories base-package="org.tscore.graph.repository" />
 
     <tx:annotation-driven mode="aspectj"/>

@@ -2,14 +2,14 @@ package org.tscore.test.graph
 
 import org.tscore.graph.repository.SubjectRepository
 import org.tscore.graph.model.Subject
-import org.tscore.graph.util.Conversions._
+import scala.collection.JavaConversions._
 import collection.mutable
 
-class SubjectSpec extends BaseRepositorySpec[Subject] {
-  def getRepository : SubjectRepository = ctx.getBean(classOf[SubjectRepository])
+class SubjectSpec extends AbstractRepositorySpec {
+  def repositories = Array(classOf[SubjectRepository])
 
   test("save and find single subject") {
-    val repository = getRepository
+    val repository = getRepository(classOf[SubjectRepository])
     assert(repository.count() === 0, "repository not empty")
 
     val subject = new Subject
@@ -24,10 +24,10 @@ class SubjectSpec extends BaseRepositorySpec[Subject] {
   }
 
   test("save and find multiple subjects") {
-    val repository = getRepository
+    val repository = getRepository(classOf[SubjectRepository])
     assert(repository.count() === 0, "repository not empty")
 
-    var subjects = new mutable.ArrayBuffer[Subject](1)
+    var subjects = new mutable.ArrayBuffer[Subject](10)
     for (i <- 0 until 9) {
       subjects += repository.save(new Subject)
       assert(subjects(i).id > 0, "invalid id for stored subject")
