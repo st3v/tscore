@@ -31,8 +31,7 @@ class NumericEndorsementScore[T] (v: T)(implicit n: Numeric[T]) extends Endorsem
   override def equals(obj:Any) = {
     obj match {
       case y: this.type => y.value == this.value
-      case y: T => y == this.value
-      case _ => false
+      case _ => obj.equals(this.value)
     }
   }
 
