@@ -39,7 +39,7 @@ class EndorsementSpec extends AbstractRepositorySpec {
     assert(savedActor.endorsed.iterator.next === subject)
 
     assert(savedActor.givenEndorsements.size === 1)
-//    assert(savedActor.givenEndorsements.iterator.next === endorsement)
+    assert(savedActor.givenEndorsements.iterator.next === endorsement)
 
   }
 
@@ -55,7 +55,7 @@ class EndorsementSpec extends AbstractRepositorySpec {
     assert(actor.endorsed.size === 0)
     assert(actor.givenEndorsements.size === 0)
 
-    actor.endorse(subject, 1.0)
+    actor.endorse(subject, 2.2)
     getRepository(classOf[ActorRepository]).save(actor)
 
     assert(actor.id > 0)
@@ -63,20 +63,20 @@ class EndorsementSpec extends AbstractRepositorySpec {
     assert(actor.givenEndorsements.size === 1)
     assert(actor.endorsed.iterator.next().id === subject.id)
     assert(actor.givenEndorsements.size === 1)
-    assert(actor.givenEndorsements.iterator.next().score === 1.0)
+    assert(actor.givenEndorsements.iterator.next().score === 2.2)
     assert(actor.receivedEndorsements.size === 0)
     assert(actor.endorsers.size === 0)
 
     assert(subject.id > 0)
     assert(subject.endorsers.size === 1)
     assert(subject.endorsers.iterator.next() === actor)
-//    /assert(subject.receivedEndorsements.iterator.next().score === 1.0)
+    assert(subject.receivedEndorsements.iterator.next().score === 2.2)
 
     assert(getRepository(classOf[EndorsementRepository]).count() === 1)
     for (endorsement <- getRepository(classOf[EndorsementRepository]).findAll()) {
       assert(endorsement.actor.id === actor.id)
       assert(endorsement.subject.id === subject.id)
-      assert(endorsement.score === 1.0)
+      assert(endorsement.score === 2.2)
     }
   }
 

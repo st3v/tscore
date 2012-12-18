@@ -1,9 +1,7 @@
 package org.tscore.graph.model
 
 object NumericEndorsementScore {
-  implicit def toNumericScore[U](value: U)(implicit n: Numeric[U]) = {
-    new NumericEndorsementScore(value)
-  }
+  implicit def toNumericScore[U](value: U)(implicit n: Numeric[U]) = new NumericEndorsementScore(value)
   implicit def fromNumericScore[U](score: NumericEndorsementScore[U]) = score.value
 }
 
@@ -30,5 +28,17 @@ class NumericEndorsementScore[T] (v: T)(implicit n: Numeric[T]) extends Endorsem
 
   override def toString : String = value.toString
 
+  override def equals(obj:Any) = {
+    obj match {
+      case y: this.type => y.value == this.value
+      case y: T => y == this.value
+      case _ => false
+    }
+  }
+
+}
+
+class NumericEndorsementScoreFactory[AnyRef] extends EndorsementScoreFactory[AnyRef] {
+  def createScoreFromString(value: String) = new NumericEndorsementScore(value.toDouble)
 }
 
