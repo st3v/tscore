@@ -5,25 +5,37 @@ organization := "org.kiva"
 version := "1.0.0=SNAPSHOT"
  
 scalaVersion := "2.9.2"
- 
-libraryDependencies += "org.scalatest" %% "scalatest" % "1.7.2" % "test"
 
-libraryDependencies += "org.springframework.data" % "spring-data-neo4j-rest" % "2.1.0.RELEASE" excludeAll(
-                                                                                              ExclusionRule(organization = "com.sun.jdmk"),
-                                                                                              ExclusionRule(organization = "com.sun.jmx"),
-                                                                                              ExclusionRule(organization = "javax.jms")
-                                                                                            )
+resolvers ++= Seq("Spring Staging Repository" at "https://repo.springsource.org/libs-staging-local",
+                  "Spring Milestone Repository" at "http://repo.springsource.org/libs-milestone",
+                  "Spring Snapshot Repository" at "https://repo.springsource.org/libs-snapshot",
+                  "Spring Release Repository" at "https://repo.springsource.org/libs-release",
+                  "Neo4j Releases" at "http://m2.neo4j.org/content/repositories/releases",
+                  "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
+                  "releases" at "http://oss.sonatype.org/content/repositories/releases")
 
-libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.6.6"
 
-resolvers += "Spring Staging Repository" at "https://repo.springsource.org/libs-staging-local"
+seq(com.github.siasia.WebPlugin.webSettings :_*)
 
-resolvers += "Spring Milestone Repository" at "http://repo.springsource.org/libs-milestone"
+scalacOptions ++= Seq("-deprecation", "-unchecked")
 
-resolvers += "Spring Snapshot Repository" at "https://repo.springsource.org/libs-snapshot"
+unmanagedResourceDirectories in Test <+= (baseDirectory) { _ / "src/main/webapp" }
 
-resolvers += "Spring Release Repository" at "https://repo.springsource.org/libs-release"
+libraryDependencies += "org.springframework.data" % "spring-data-neo4j-rest" % "2.1.0.RELEASE" excludeAll(ExclusionRule(organization = "com.sun.jdmk"),
+                                                                                       ExclusionRule(organization = "com.sun.jmx"),
+                                                                                       ExclusionRule(organization = "javax.jms"))
 
-resolvers += "Neo4j Releases" at "http://m2.neo4j.org/content/repositories/releases"
+libraryDependencies ++= {
+  val liftVersion = "2.5-M3"
+  Seq(
+    "org.scalatest"     %% "scalatest"          % "1.7.2"           % "test",
+    "org.slf4j"         %  "slf4j-log4j12"      % "1.6.6",
+    "net.liftweb"       %% "lift-webkit"        % liftVersion        % "compile",
+    "net.liftmodules"   %% "lift-jquery-module" % (liftVersion + "-2.0"),
+    "org.eclipse.jetty" % "jetty-webapp"        % "8.1.7.v20120910"  % "container,test",
+    "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container,test" artifacts Artifact("javax.servlet", "jar", "jar"),
+    "org.specs2"        %% "specs2"             % "1.12.1"           % "test"
+  )
+}
 
 parallelExecution in Test := false

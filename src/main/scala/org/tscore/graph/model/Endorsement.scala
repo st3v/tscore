@@ -13,7 +13,8 @@ class Endorsement {
   @EndNode
   var subject: Subject = _
 
-  var score: Double = 0.0
+  @GraphProperty
+  var score: EndorsementScore[_] = _
 
   override def toString = "%s %s (score: %s) %s".format(actor, "ENDORSES", score, subject)
 
@@ -26,7 +27,7 @@ class Endorsement {
 }
 
 object Endorsement {
-  def apply(actor: Actor, subject: Subject, score: Double) = {
+  def apply(actor: Actor, subject: Subject, score: EndorsementScore[_]) = {
     val endorsement = new Endorsement()
     endorsement.actor = actor
     endorsement.subject = subject

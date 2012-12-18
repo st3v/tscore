@@ -19,6 +19,7 @@ class Actor extends Subject {
   /**
    * PRIVATE. Holds all outgoing endorsements for this actor.
    */
+  @Fetch
   @RelatedToVia(`type` = "ENDORSES", direction = Direction.OUTGOING)
   private val outgoing : java.util.Set[Endorsement] = new java.util.HashSet[Endorsement]()
 
@@ -43,7 +44,7 @@ class Actor extends Subject {
    * @param score   The score for the endorsement.
    * @return
    */
-  def endorse(subject: Subject, score: Double) : Endorsement = {
+  def endorse(subject: Subject, score: EndorsementScore[_]) : Endorsement = {
     val endorsement = Endorsement(this, subject, score)
     outgoing.add(endorsement)
     subject.incoming.add(endorsement)

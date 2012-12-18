@@ -29,4 +29,13 @@
 
     <tx:annotation-driven mode="aspectj"/>
 
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="org.tscore.graph.model.EndorsementScoreToStringConverter"/>
+                <!--<bean class="org.tscore.graph.model.StringToNumericEndorsementScoreConverter"/>-->
+            </set>
+        </property>
+    </bean>
+
 </beans>
