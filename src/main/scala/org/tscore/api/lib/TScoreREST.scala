@@ -6,7 +6,7 @@ import rest._
 import util._
 import Helpers._
 import json._
-import org.tscore.api.model._
+import org.tscore.api.model.Subject
 
 
 //https://github.com/dpp/simply_lift/blob/master/samples/http_rest/src/main/scala/code/lib/FullRest.scala

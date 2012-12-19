@@ -56,7 +56,7 @@ class Boot {
     JQueryModule.init()
 
     //Hooking up rest API object to Lift
-    //LiftRules.dispatch.append(TScoreRest)   // stateful -- associated with a servlet container session
-    LiftRules.statelessDispatchTable.append(TScoreREST)   // stateless -- no session created
+    LiftRules.dispatch.append(TScoreREST) // stateful -- associated with a servlet container session
+    LiftRules.statelessDispatchTable.append(TScoreREST) // stateless -- no session created
   }
 }

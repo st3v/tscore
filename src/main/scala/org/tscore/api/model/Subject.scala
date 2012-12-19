@@ -99,7 +99,7 @@ object Subject {
     "id": "4567",
     "name": "Jeremy the social worker",
     "description": "Needs a Kiva Zip loan to help his community",
-    "loan_quantity": 800
+    "loanQuantity": 800
   },
   ]"""
 

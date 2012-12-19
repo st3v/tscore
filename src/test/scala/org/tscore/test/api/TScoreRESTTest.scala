@@ -2,6 +2,8 @@ package org.tscore.test.api
 
 import org.scalatest.FunSuite
 import net.liftweb.json._
+import net.liftweb.mocks.MockHttpServletRequest
+import net.liftweb.mockweb.MockWeb
 
 class TScoreRESTTest extends FunSuite {
   private implicit val formats = net.liftweb.json.DefaultFormats
@@ -28,6 +30,8 @@ class TScoreRESTTest extends FunSuite {
     assert(result.length === 1)
     assert(result(0).name === "Jeremy the social worker")
   }
+
+
 }
 
 case class TestSubject(id: String, name: String, description: String, quantity: Int) {
