@@ -10,6 +10,7 @@ import sitemap._
 import Loc._
 import net.liftmodules.JQueryModule
 import net.liftweb.http.js.jquery._
+import org.tscore.api.lib.TScoreREST
 
 
 /**
@@ -54,5 +55,8 @@ class Boot {
     JQueryModule.InitParam.JQuery=JQueryModule.JQuery172
     JQueryModule.init()
 
+    //Hooking up rest API object to Lift
+    //LiftRules.dispatch.append(TScoreRest)   // stateful -- associated with a servlet container session
+    LiftRules.statelessDispatchTable.append(TScoreREST)   // stateless -- no session created
   }
 }
