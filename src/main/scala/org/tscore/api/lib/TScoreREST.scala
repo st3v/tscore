@@ -4,10 +4,9 @@ import net.liftweb._
 import http._
 import rest._
 import util._
-import Helpers._
 import json._
 import org.tscore.api.model.Subject
-
+import org.tscore.api.model.Endorsement
 
 //https://github.com/dpp/simply_lift/blob/master/samples/http_rest/src/main/scala/code/lib/FullRest.scala
 
@@ -48,5 +47,42 @@ object TScoreREST extends RestHelper {
       Subject(mergeJson(subject, json)).map(Subject.add(_): JValue)
 
     */
+  })
+
+  // Serve /api/endorsement and friends
+  //Testing route: http://localhost:8080/api/endorsement/XXX
+  serve( "api" / "endorsement" prefix {
+
+    // /api/endorsement returns all the endorsements
+    case Nil JsonGet _ => Endorsement.allEndorsements: JValue
+
+    // /api/endorsement/count gets the endorsement count
+    case "count" :: Nil JsonGet _ => JInt(Endorsement.allEndorsements.length)
+
+    // /api/endorsement/endorsement_id gets the specified endorsement (or a 404)
+    case Endorsement(endorsement) :: Nil JsonGet _ => endorsement: JValue
+
+    // /api/endorsement/search/foo or /api/endorsement/search?q=foo
+    case "search" :: q JsonGet _ =>
+      (for {
+        searchString <- q ::: S.params("q")
+        endorsement <- Endorsement.search(searchString)
+      } yield endorsement).distinct: JValue
+
+    // DELETE the endorsement in question
+    case Endorsement(endorsement) :: Nil JsonDelete _ =>
+      Endorsement.delete(endorsement.id).map(a => a: JValue)
+
+    // PUT adds the endorsement if the JSON is parsable
+    case Nil JsonPut Endorsement(endorsement) -> _ => Endorsement.add(endorsement): JValue
+
+    // POST if we find the endorsement, merge the fields from the
+    // the POST body and update the endorsement
+    //TODO: Figure out how to make this work
+    /**
+    case Endorsement(endorsement) :: Nil JsonPost json -> _ =>
+      Endorsement(mergeJson(endorsement, json)).map(Endorsement.add(_): JValue)
+
+      */
   })
 }
