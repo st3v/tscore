@@ -14,6 +14,7 @@ import org.tscore.api.model.Subject
 object TScoreREST extends RestHelper {
 
   // Serve /api/subject and friends
+  //Testing route: http://localhost:8080/api/subject/XXX
   serve( "api" / "subject" prefix {
 
     // /api/subject returns all the subjects
@@ -46,21 +47,6 @@ object TScoreREST extends RestHelper {
     case Subject(subject) :: Nil JsonPost json -> _ =>
       Subject(mergeJson(subject, json)).map(Subject.add(_): JValue)
 
-   */
-
-    // Wait for a change to the Subjects
-    // But do it asynchronously
-    case "change" :: Nil JsonGet _ =>
-      RestContinuation.async {
-        satisfyRequest => {
-          // schedule a "Null" return if there's no other answer
-          // after 110 seconds
-          Schedule.schedule(() => satisfyRequest(JNull), 110 seconds)
-
-          // register for an "onChange" event.  When it
-          // fires, return the changed subject as a response
-          Subject.onChange(subject => satisfyRequest(subject: JValue))
-        }
-      }
+    */
   })
 }
