@@ -3,7 +3,6 @@ package org.tscore.api.lib
 import net.liftweb._
 import http._
 import rest._
-import util._
 import json._
 import org.tscore.api.model.Subject
 import org.tscore.api.model.Endorsement
