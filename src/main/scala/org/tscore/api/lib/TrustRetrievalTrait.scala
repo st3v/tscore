@@ -15,18 +15,18 @@ import common._
  */
 trait TrustRetrievalTrait {
   //Subjects
-  def getAllSubjects(): List[Subject]
+  def getAllSubjects: List[Subject]
   def findSubjectById(subjectId: String): Box[Subject]
   def searchSubjectsByKeyword(keyword: String): List[Subject]
   def addSubject(subject: Subject): Subject
   def deleteSubject(subjectId: String): Box[Subject]
   def prependSubjectListener(f: Subject => Unit)
 
-  /**
   //Endorsements
-  def findEndorsementById(endorsementId: String): Subject
-  def searchEndorsementsByKeyword(keyword: String): List[Subject]
-  def addEndorsement(endorsement: Endorsement): Subject
-  def deleteEndorsement(endorsementId: String): Box[Subject]
-    */
+  def getAllEndorsements: List[Endorsement]
+  def findEndorsementById(endorsementId: String): Box[Endorsement]
+  def searchEndorsementsByKeyword(keyword: String): List[Endorsement]
+  def addEndorsement(endorsement: Endorsement): Endorsement
+  def deleteEndorsement(endorsementId: String): Box[Endorsement]
+  def prependEndorsementListener(f: Endorsement => Unit)
 }

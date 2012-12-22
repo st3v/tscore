@@ -1,7 +1,7 @@
 package org.tscore.api.snippet
 
 import org.tscore.api.lib.TrustRetrievalTrait
-import org.tscore.api.model.{Endorsement, Subject}
+import org.tscore.api.model.{Subject, Endorsement}
 
 import net.liftweb._
 import util._
@@ -21,8 +21,14 @@ import net.liftweb.util.Schedule
 class TrustRetrievalMock extends TrustRetrievalTrait {
   private implicit val formats = net.liftweb.json.DefaultFormats + BigDecimalSerializer
 
+
+  /*******************************************
+  ********          SUBJECTS       ***********
+  ********************************************/
+
+
   // The raw data
-  private def data =
+  private def subjectData =
     """[
   {
     "id": "1234",
@@ -38,8 +44,8 @@ class TrustRetrievalMock extends TrustRetrievalTrait {
   },
   ]"""
 
-  private var subjects = parse(data).extract[List[Subject]]
-  private var listeners: List[Subject => Unit] = Nil
+  private var subjects = parse(subjectData).extract[List[Subject]]
+  private var subjectListeners: List[Subject => Unit] = Nil
 
   //Subjects
 
@@ -58,7 +64,7 @@ class TrustRetrievalMock extends TrustRetrievalTrait {
 
   def addSubject(subject: Subject): Subject = synchronized {
     subjects = subject :: subjects.filterNot(_.id == subject.id)
-    updateListeners(subject)
+    updateSubjectListeners(subject)
   }
 
   def deleteSubject(subjectId: String): Box[Subject] = synchronized {
@@ -73,32 +79,97 @@ class TrustRetrievalMock extends TrustRetrievalTrait {
       case _ => true
     }
 
-    ret.map(updateListeners)
+    ret.map(updateSubjectListeners)
   }
 
   def prependSubjectListener(f: Subject => Unit) = {
     //prepend the function to the list of listeners
-    listeners ::= f
+    subjectListeners ::= f
   }
 
-  /**
+
+  /*******************************************
+  ********       ENDORSEMENTS      ***********
+  ********************************************/
+
+
+  // The raw data
+  private def endorsementData =
+    """[
+  {
+    "id": "1",
+    "description": "Made a repayment",
+    "size": 20
+  },
+  {
+    "id": "2",
+    "description": "Had a recommendation make a repayment",
+    "size": 10
+  },
+  ]"""
+
+  private var endorsements = parse(endorsementData).extract[List[Endorsement]]
+  private var endorsementListeners: List[Endorsement => Unit] = Nil
 
   //Endorsements
-  def findEndorsementById(endorsementId: String): Subject
-  def searchEndorsementsByKeyword(keyword: String): List[Subject]
-  def addEndorsement(endorsement: Endorsement): Subject
-  def deleteEndorsement(endorsementId: String): Box[Subject]
 
-  */
+  def getAllEndorsements(): List[Endorsement] = {
+    endorsements
+  }
 
-  //Update listeners when the data changes
-  private def updateListeners(subject: Subject): Subject = {
+  def findEndorsementById(endorsementId: String): Box[Endorsement] = synchronized {
+    endorsements.find(_.id == endorsementId)
+  }
+
+  def searchEndorsementsByKeyword(keyword: String): List[Endorsement] = {
+    val keywordLC = keyword.toLowerCase()
+    endorsements.filter(i => i.description.toLowerCase.indexOf(keywordLC) >= 0)
+  }
+
+  def addEndorsement(endorsement: Endorsement): Endorsement = synchronized {
+    endorsements = endorsement :: endorsements.filterNot(_.id == endorsement.id)
+    updateEndorsementListeners(endorsement)
+  }
+
+  def deleteEndorsement(endorsementId: String): Box[Endorsement] = synchronized {
+    var ret: Box[Endorsement] = Empty
+
+    val Id = endorsementId   //an upper case stable ID for pattern matching
+
+    endorsements = endorsements.filter {
+      case i@Endorsement(Id, _, _) =>
+        ret = Full(i) // side effect
+        false
+      case _ => true
+    }
+
+    ret.map(updateEndorsementListeners)
+  }
+
+  def prependEndorsementListener(f: Endorsement => Unit) = {
+    //prepend the function to the list of listeners
+    endorsementListeners ::= f
+  }
+
+  //Update subject listeners when the data changes
+  private def updateSubjectListeners(subject: Subject): Subject = {
     synchronized {
-      listeners.foreach(f =>
+      subjectListeners.foreach(f =>
         Schedule.schedule(() => f(subject), 0 seconds))
 
-      listeners = Nil
+      subjectListeners = Nil
     }
     subject
+  }
+
+  //Update endorsement listeners when the data changes
+  private def updateEndorsementListeners(endorsement: Endorsement): Endorsement = {
+    synchronized {
+      endorsementListeners.foreach(f =>
+        Schedule.schedule(() => f(endorsement), 0 seconds))
+
+      endorsementListeners = Nil
+    }
+    endorsement
   }
 }
