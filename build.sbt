@@ -34,7 +34,8 @@ libraryDependencies ++= {
     "org.eclipse.jetty" % "jetty-webapp"        % "8.1.7.v20120910"  % "container,test",
     "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container,test" artifacts Artifact("javax.servlet", "jar", "jar"),
     "org.specs2"        %% "specs2"             % "1.12.1"           % "test",
-    "com.fasterxml"     % "jackson-module-scala" % "1.9.3"
+    "com.fasterxml.jackson.core" % "jackson-core" % "2.1.1",
+    "com.fasterxml.jackson.module" % "jackson-module-scala" % "2.1.2"
   )
 }
 

@@ -2,10 +2,6 @@ package org.tscore.graph.model
 
 import org.springframework.core.convert.converter.Converter
 import org.springframework.core.convert.converter.ConverterFactory
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import org.codehaus.jackson.map.ObjectMapper
-import org.codehaus.jackson.annotate.JsonMethod
 import org.tscore.graph.util.Json
 
 /**

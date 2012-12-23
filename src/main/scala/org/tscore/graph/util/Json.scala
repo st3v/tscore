@@ -1,9 +1,9 @@
 package org.tscore.graph.util
 
-import org.codehaus.jackson.map.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import org.codehaus.jackson.annotate.JsonMethod
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.annotation.PropertyAccessor
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility
 
 
 trait Json {
@@ -11,7 +11,7 @@ trait Json {
 
   mapper.registerModule(DefaultScalaModule)
   mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL)
-  mapper.setVisibility(JsonMethod.ALL, Visibility.ANY)
+  mapper.setVisibility(PropertyAccessor.ALL, Visibility.ANY)
 
   def generate[T](source: T) : String = {
     mapper.writeValueAsString(source)
