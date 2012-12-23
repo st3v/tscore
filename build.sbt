@@ -14,7 +14,6 @@ resolvers ++= Seq("Spring Staging Repository" at "https://repo.springsource.org/
                   "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
                   "releases" at "http://oss.sonatype.org/content/repositories/releases")
 
-
 seq(com.github.siasia.WebPlugin.webSettings :_*)
 
 scalacOptions ++= Seq("-deprecation", "-unchecked")
@@ -34,7 +33,8 @@ libraryDependencies ++= {
     "net.liftmodules"   %% "lift-jquery-module" % (liftVersion + "-2.0"),
     "org.eclipse.jetty" % "jetty-webapp"        % "8.1.7.v20120910"  % "container,test",
     "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container,test" artifacts Artifact("javax.servlet", "jar", "jar"),
-    "org.specs2"        %% "specs2"             % "1.12.1"           % "test"
+    "org.specs2"        %% "specs2"             % "1.12.1"           % "test",
+    "com.fasterxml"     % "jackson-module-scala" % "1.9.3"
   )
 }
 

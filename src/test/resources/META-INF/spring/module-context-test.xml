@@ -35,10 +35,12 @@
     <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <bean class="org.tscore.graph.model.EndorsementScoreToStringConverter"/>
-                <bean class="org.tscore.graph.model.StringToEndorsementScoreConverter"/>
+                <bean class="org.tscore.graph.model.ScoreToStringConverter"/>
+                <bean class="org.tscore.graph.model.StringToScoreConverter"/>
             </set>
         </property>
     </bean>
+
+    <bean id="trustService" class="org.tscore.trust.TrustService" />
 
 </beans>

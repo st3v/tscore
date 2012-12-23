@@ -1,7 +1,7 @@
 package org.tscore.test.graph
 
 import org.tscore.graph.repository.{SubjectRepository, ActorRepository}
-import org.tscore.graph.model.{EndorsementScore, Actor}
+import org.tscore.graph.model.Actor
 import scala.collection.JavaConversions._
 
 class ActorSpec extends AbstractRepositorySpec {

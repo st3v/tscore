@@ -4,7 +4,6 @@ import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FunSuite}
 import org.springframework.context.support.GenericXmlApplicationContext
 import org.springframework.data.neo4j.repository.GraphRepository
 import org.springframework.transaction.annotation.Transactional
-import org.tscore.graph.model.EndorsementScore
 
 /**
  * Base class for test suites that use Neo4j repositories.

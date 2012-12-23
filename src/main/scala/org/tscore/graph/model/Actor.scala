@@ -13,7 +13,7 @@ class Actor extends Subject {
   /**
    * Name for this actor.
    */
-  @Indexed(indexName = "name", indexType = IndexType.FULLTEXT)
+  @Indexed(indexName = "name", indexType = IndexType.FULLTEXT, unique=true)
   var name : String = "Anonymous"
 
   /**
@@ -44,7 +44,7 @@ class Actor extends Subject {
    * @param score   The score for the endorsement.
    * @return
    */
-  def endorse(subject: Subject, score: EndorsementScore[_]) : Endorsement = {
+  def endorse(subject: Subject, score: Score) : Endorsement = {
     val endorsement = Endorsement(this, subject, score)
     outgoing.add(endorsement)
     subject.incoming.add(endorsement)
