@@ -28,9 +28,9 @@
     <!-- Neo4j configuration (creates Neo4jTemplate) -->
     <neo4j:config graphDatabaseService="graphDatabaseService" />
 
-    <neo4j:repositories base-package="org.tscore.graph.repository" />
-
     <tx:annotation-driven mode="aspectj"/>
+
+    <neo4j:repositories base-package="org.tscore.graph.repository" />
 
     <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters">
@@ -40,7 +40,5 @@
             </set>
         </property>
     </bean>
-
-    <bean id="trustService" class="org.tscore.trust.TrustService" />
 
 </beans>

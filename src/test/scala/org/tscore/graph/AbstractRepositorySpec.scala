@@ -1,23 +1,24 @@
-package org.tscore.test.graph
+package org.tscore.graph
 
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FunSuite}
 import org.springframework.context.support.GenericXmlApplicationContext
 import org.springframework.data.neo4j.repository.GraphRepository
 import org.springframework.transaction.annotation.Transactional
+import org.tscore.TestSuite
 
 /**
  * Base class for test suites that use Neo4j repositories.
  *
  */
 @Transactional
-abstract class AbstractRepositorySpec extends FunSuite with BeforeAndAfterAll with BeforeAndAfter {
+abstract class AbstractRepositorySpec extends TestSuite with BeforeAndAfterAll with BeforeAndAfter {
   var ctx: GenericXmlApplicationContext = null
 
   /**
    * Open application context before first test.
    */
   override def beforeAll() {
-    ctx = new GenericXmlApplicationContext("classpath*:/META-INF/spring/module-context-test.xml")
+    ctx = new GenericXmlApplicationContext("classpath*:/META-INF/spring/module-context-graph-test.xml")
   }
 
   /**

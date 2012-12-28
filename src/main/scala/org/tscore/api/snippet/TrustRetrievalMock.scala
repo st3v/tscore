@@ -1,6 +1,6 @@
 package org.tscore.api.snippet
 
-import org.tscore.api.lib.TrustRetrievalTrait
+import org.tscore.api.lib.{SubjectRetrival, EndorsementRetrival}
 import org.tscore.api.model.{Subject, Endorsement}
 
 import net.liftweb._
@@ -11,14 +11,7 @@ import common.{Full, Empty, Box}
 import net.liftweb.json._
 import net.liftweb.util.Schedule
 
-/**
- * Created with IntelliJ IDEA.
- * User: zahid
- * Date: 12/21/12
- * Time: 4:16 PM
- * To change this template use File | Settings | File Templates.
- */
-class TrustRetrievalMock extends TrustRetrievalTrait {
+class TrustRetrievalMock extends SubjectRetrival with EndorsementRetrival {
   private implicit val formats = net.liftweb.json.DefaultFormats + BigDecimalSerializer
 
 

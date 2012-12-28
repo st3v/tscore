@@ -1,11 +1,12 @@
-package org.tscore.test.api
+package org.tscore.api
 
 import org.scalatest.FunSuite
 import net.liftweb.json._
 import net.liftweb.mocks.MockHttpServletRequest
 import net.liftweb.mockweb.MockWeb
+import org.tscore.TestSuite
 
-class TScoreRESTTest extends FunSuite {
+class TScoreRESTTest extends TestSuite {
   private implicit val formats = net.liftweb.json.DefaultFormats
 
   private def data =

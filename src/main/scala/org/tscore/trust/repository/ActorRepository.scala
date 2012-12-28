@@ -1,9 +1,8 @@
-package org.tscore.graph.repository
+package org.tscore.trust.repository
 
 import org.springframework.data.neo4j.repository.GraphRepository
-import org.tscore.graph.model.Actor
+import org.tscore.trust.model.Actor
 
 trait ActorRepository extends GraphRepository[Actor] {
-  def findById(id: java.lang.Long): Actor
   def findByName(name: String): Actor
 }

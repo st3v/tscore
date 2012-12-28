@@ -1,4 +1,4 @@
-package org.tscore.trust.score
+package org.tscore.trust.model.score
 
 import org.tscore.graph.model.Score
 

@@ -1,20 +1,20 @@
-package org.tscore.test.trust
+package org.tscore.trust
 
-import org.tscore.trust.TrustService
+import org.tscore.trust.service.impl.ActorService
 import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FunSuite}
 import org.springframework.context.support.GenericXmlApplicationContext
-import org.tscore.graph.repository.ActorRepository
-import org.tscore.trust.score.TrustScore._
-import org.tscore.trust.score.{NumericScore, TrustScore}
+import org.tscore.trust.repository.ActorRepository
+import org.tscore.trust.model.score.TrustScore
+import org.tscore.TestSuite
 
-class TrustServiceSpec extends FunSuite with BeforeAndAfterAll with BeforeAndAfter {
-  var service: TrustService = null
+class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAfter {
+  var service: ActorService = null
   var ctx: GenericXmlApplicationContext = null
   var actorRepository: ActorRepository = null
 
   override def beforeAll() {
-    ctx = new GenericXmlApplicationContext("classpath*:/META-INF/spring/module-context-test.xml")
-    service = ctx.getBean(classOf[TrustService])
+    ctx = new GenericXmlApplicationContext("classpath*:/META-INF/spring/module-context-trust-test.xml")
+    service = ctx.getBean(classOf[ActorService])
     actorRepository = ctx.getBean(classOf[ActorRepository])
   }
 
@@ -26,25 +26,21 @@ class TrustServiceSpec extends FunSuite with BeforeAndAfterAll with BeforeAndAft
     ctx.close()
   }
 
-  test("invalid cast") {
-    // create an Actor
-    val actor = org.tscore.graph.model.Actor("stev")
-    actorRepository.save(actor)
-
-    // try to fetch as a TrustActor
-    val found = service.findActor("stev")
-    assert(found === null)
+  test("create actor without score") {
+    val actor = service.create("Stev")
+    assert(actor.score == TrustScore.zero)
   }
+
 
   test("create, save, find, and update single actor") {
     // create new actor
-    val actor = service.createActor("Stev", 2.0)
+    val actor = service.create("Stev", 2.0)
 
     // store the new actor
-    service.saveActor(actor)
+    service.addActor(actor)
 
     // fetch the stored actor and validate
-    var found = service.findActor("Stev")
+    var found = service.findActorByName("Stev")
     assert(found.name === "Stev")
     assert(found.score === 2.0)
 
@@ -53,10 +49,10 @@ class TrustServiceSpec extends FunSuite with BeforeAndAfterAll with BeforeAndAft
     assert(actor.score != found.score)
 
     // safe changes to actor
-    service.saveActor(actor)
+    service.addActor(actor)
 
     // re-fetch actor and validate changes
-    found = service.findActor("Stev")
+    found = service.findActorByName("Stev")
     assert(actor.score === found.score)
     assert(found.score == -1)
     assert(found.score == -1.0)
@@ -74,6 +70,9 @@ class TrustServiceSpec extends FunSuite with BeforeAndAfterAll with BeforeAndAft
     assert(found.score > new TrustScore(-2))
     assert(found.score >= new TrustScore(-1))
     assert(found.score >= new TrustScore(-2))
+
+    val actors = service.getAllActors
+    assert(actors.size == 1)
   }
 }
 

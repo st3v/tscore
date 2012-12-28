@@ -1,6 +1,6 @@
 package org.tscore.graph.model
 
-import org.springframework.data.neo4j.annotation.{RelatedToVia, Fetch, RelatedTo, Indexed}
+import org.springframework.data.neo4j.annotation.{RelatedToVia, Fetch, Indexed}
 import org.springframework.data.neo4j.support.index.IndexType
 import org.neo4j.graphdb.Direction
 import scala.collection.JavaConversions._

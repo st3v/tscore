@@ -1,4 +1,4 @@
-package org.tscore.test.graph
+package org.tscore.graph
 
 import org.tscore.graph.model.Score
 

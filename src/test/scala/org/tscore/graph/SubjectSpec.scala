@@ -1,4 +1,4 @@
-package org.tscore.test.graph
+package org.tscore.graph
 
 import org.tscore.graph.repository.SubjectRepository
 import org.tscore.graph.model.Subject
@@ -6,7 +6,7 @@ import scala.collection.JavaConversions._
 import collection.mutable
 
 class SubjectSpec extends AbstractRepositorySpec {
-  def repositories = Array(classOf[SubjectRepository])
+  def repositories = Array(classOf[org.tscore.graph.repository.SubjectRepository])
 
   test("save and find single subject") {
     val repository = getRepository(classOf[SubjectRepository])

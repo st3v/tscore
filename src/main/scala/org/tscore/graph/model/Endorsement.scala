@@ -13,7 +13,6 @@ class Endorsement {
   @EndNode
   var subject: Subject = _
 
-  @GraphProperty
   var score: Score = _
 
   override def toString = "%s %s (score: %s) %s".format(actor, "ENDORSES", score, subject)

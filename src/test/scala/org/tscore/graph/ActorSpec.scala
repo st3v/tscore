@@ -1,4 +1,4 @@
-package org.tscore.test.graph
+package org.tscore.graph
 
 import org.tscore.graph.repository.{SubjectRepository, ActorRepository}
 import org.tscore.graph.model.Actor
@@ -28,7 +28,7 @@ class ActorSpec extends AbstractRepositorySpec {
     }
 
     // find by name
-    assert(repository.findActorByName(stored.name) === stored, "unexpected actor fetched")
+    assert(repository.findByName(stored.name) === stored, "unexpected actor fetched")
 
     // find by id
     assert(repository.findOne(stored.id) === stored, "unexpected actor fetched")

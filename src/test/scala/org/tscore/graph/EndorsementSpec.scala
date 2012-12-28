@@ -1,10 +1,10 @@
-package org.tscore.test.graph
+package org.tscore.graph
 
 import org.tscore.graph.model.{Endorsement, Subject, Actor}
 import org.tscore.graph.repository.{EndorsementRepository, SubjectRepository, ActorRepository}
 import org.springframework.transaction.annotation.Transactional
 import scala.collection.JavaConversions._
-import org.tscore.test.graph.ScoreMock._
+import org.tscore.graph.ScoreMock._
 
 @Transactional
 class EndorsementSpec extends AbstractRepositorySpec {

@@ -1,4 +1,4 @@
-package org.tscore.trust.score
+package org.tscore.trust.model.score
 
 case class EndorsementScore(override val value: Int) extends NumericScore[Int](value)
 
