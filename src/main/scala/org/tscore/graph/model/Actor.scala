@@ -11,12 +11,6 @@ import collection.Iterable
  */
 class Actor extends Subject {
   /**
-   * Name for this actor.
-   */
-  @Indexed(indexName = "name", indexType = IndexType.FULLTEXT, unique=true)
-  var name : String = "Anonymous"
-
-  /**
    * PRIVATE. Holds all outgoing endorsements for this actor.
    */
   @Fetch
@@ -41,32 +35,18 @@ class Actor extends Subject {
    * Creates an endorsement from this actor for the given subject with the given score.
    *
    * @param subject The subject to be endorsed by this actor.
-   * @param score   The score for the endorsement.
    * @return
    */
-  def endorse(subject: Subject, score: Score) : Endorsement = {
-    val endorsement = Endorsement(this, subject, score)
+  def endorse(subject: Subject) : Endorsement = {
+    val endorsement = Endorsement(this, subject)
     outgoing.add(endorsement)
     subject.incoming.add(endorsement)
     endorsement
   }
 
-  override def toString : String = "%s (name: %s)".format(super.toString, name)
-
   override def equals(obj:Any) : Boolean = {
     super.equals(obj) &&
       obj.isInstanceOf[Actor] &&
-      obj.asInstanceOf[Actor].name == this.name
-  }
-}
-
-/**
- * Companion object that provides a convenience constructor.
- */
-object Actor {
-  def apply(name: String) = {
-    val actor = new Actor()
-    actor.name = name
-    actor
+      obj.asInstanceOf[Actor].id == this.id
   }
 }

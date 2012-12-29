@@ -36,7 +36,3 @@ class Subject {
 
   override def toString : String = "%s:%s".format(this.getClass.getSimpleName, id)
 }
-
-object Subject {
-  def apply() = new Subject()
-}

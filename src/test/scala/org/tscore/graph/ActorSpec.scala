@@ -5,7 +5,7 @@ import org.tscore.graph.model.Actor
 import scala.collection.JavaConversions._
 
 class ActorSpec extends AbstractRepositorySpec {
-  def repositories = Array(classOf[ActorRepository])
+  def repositories = Array(classOf[ActorRepository], classOf[SubjectRepository])
 
   test("save and find single actor") {
     // get the actor repository and make sure it's empty
@@ -13,7 +13,7 @@ class ActorSpec extends AbstractRepositorySpec {
     assert(repository.count() === 0, "repository not empty")
 
     // create a new actor
-    val actor = Actor("foo")
+    val actor = new Actor()
 
     // save that actor
     val stored = repository.save(actor)
@@ -27,15 +27,11 @@ class ActorSpec extends AbstractRepositorySpec {
       assert(fetched === stored, "unexpected actor fetched")
     }
 
-    // find by name
-    assert(repository.findByName(stored.name) === stored, "unexpected actor fetched")
-
     // find by id
     assert(repository.findOne(stored.id) === stored, "unexpected actor fetched")
 
     // make sure that actor is just another subject
-    val subjectRepo = ctx.getBean(classOf[SubjectRepository])
-    val subject = subjectRepo.findOne(stored.id)
+    val subject = getRepository(classOf[SubjectRepository]).findOne(stored.id)
     assert(subject != null, "no subject with id " + stored.id + " found")
   }
 }

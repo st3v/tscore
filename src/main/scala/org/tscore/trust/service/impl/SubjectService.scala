@@ -10,18 +10,31 @@ class SubjectService extends SubjectServiceTrait {
   @Autowired
   private val repository: SubjectRepository = null
 
-  def create(): Subject = Subject()
+  def createSubject(id: Option[Long], name: String, description: Option[String]): Option[Subject] = {
+    Option(Subject(id.getOrElse(null.asInstanceOf[Long]), name, description.getOrElse(null)))
+  }
 
-  def getAllSubjects = repository.findAll().as(classOf[java.util.List[Subject]])
+  def getAllSubjects: Seq[Subject] = repository.findAll().as(classOf[java.util.List[Subject]])
 
-  def findSubjectById(subjectId: Long) = repository.findOne(subjectId)
+  def findSubjectById(subjectId: Long): Option[Subject] = Option(repository.findOne(subjectId))
 
   def searchSubjectsByKeyword(keyword: String) = List[Subject]()
 
-  def addSubject(subject: Subject) = repository.save(subject)
+  def addSubject(subject: Subject): Option[Subject] = {
+    if (subject.id != null && !repository.exists(subject.id)) {
+      subject.id = null
+    }
+    Option(repository.save(subject))
+  }
 
-  def deleteSubject(subjectId: Long) {
-    repository.delete(subjectId)
+  def deleteSubject(subjectId: Long): Option[Subject] = {
+    findSubjectById(subjectId) match {
+      case Some(subject) => {
+        repository.delete(subjectId)
+        Some(subject)
+      }
+      case None => None
+    }
   }
 
   def prependSubjectListener(f: (Subject) => Unit) {}

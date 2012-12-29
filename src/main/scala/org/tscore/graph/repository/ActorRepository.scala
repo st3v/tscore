@@ -5,5 +5,4 @@ import org.tscore.graph.model.Actor
 
 trait ActorRepository extends GraphRepository[Actor] {
   def findById(id: java.lang.Long): Actor
-  def findByName(name: String): Actor
 }

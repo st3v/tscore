@@ -1,20 +1,18 @@
-package org.tscore.api.model
+package org.tscore.web.model
 
 import net.liftweb._
 import util._
 import common._
 import json._
 import scala.xml.Node
-import org.tscore.api.snippet.TrustRetrievalMock
-import org.tscore.api.snippet.BigDecimalSerializer
+import org.tscore.web.lib.controller.EndorsementController
 
 //An endorsement among endorsements
-case class Endorsement(id: String, description: String, size: BigDecimal)
+case class Endorsement(id: Option[Long], actorId: Long, subjectId: Long, score: Option[Int])
 
 //The Endorsement companion object
 object Endorsement {
-  private implicit val formats = net.liftweb.json.DefaultFormats + BigDecimalSerializer
-  private val tr = new TrustRetrievalMock
+  private implicit val formats = net.liftweb.json.DefaultFormats
 
   /**
    * Convert a JValue to a Endorsement if possible
@@ -22,9 +20,9 @@ object Endorsement {
   def apply(in: JValue): Box[Endorsement] = Helpers.tryo{in.extract[Endorsement]}
 
   /**
-   * Extract a String (id) to a Endorsement
+   * Extract a Long (id) to a Endorsement
    */
-  def unapply(id: String): Option[Endorsement] = Endorsement.find(id)
+  def unapply(id: BigInt): Option[Endorsement] = EndorsementController.find(id.toLong)
 
   /**
    * Extract a JValue to a Endorsement
@@ -36,9 +34,9 @@ object Endorsement {
    * We needed to replicate it here because we
    * have overloaded unapply methods
    */
-  def unapply(in: Any): Option[(String, String, BigDecimal)] = {
+  def unapply(in: Any): Option[(Option[Long], Long, Long, Option[Int])] = {
     in match {
-      case s: Endorsement => Some((s.id, s.description, s.size))
+      case s: Endorsement => Some((s.id, s.actorId, s.subjectId, s.score))
       case _ => None
     }
   }
@@ -75,30 +73,5 @@ object Endorsement {
     <endorsements>{
       endorsements.map(toXml)
       }</endorsements>
-
-
-  //Get all endorsements
-  def allEndorsements: List[Endorsement] = tr.getAllEndorsements()
-
-  //Find a Endorsement by ID
-  def find(id: String): Box[Endorsement] = tr.findEndorsementById(id)
-
-  //Find all the endorsements with the string in their name or description
-  def search(str: String): List[Endorsement] = tr.searchEndorsementsByKeyword(str)
-
-  //Add a endorsement
-  def add(endorsement: Endorsement): Endorsement = tr.addEndorsement(endorsement)
-
-  //Deletes the endorsement with id and returns the deleted endorsement or Empty if there's no match
-  def delete(id: String): Box[Endorsement] = tr.deleteEndorsement(id)
-
-  //Add an onChange listener
-  def onChange(f: Endorsement => Unit) {
-    synchronized {
-      tr.prependEndorsementListener(f)
-    }
-  }
-
-
 
 }

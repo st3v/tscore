@@ -27,6 +27,7 @@ libraryDependencies += "org.springframework.data" % "spring-data-neo4j-rest" % "
 libraryDependencies ++= {
   val liftVersion = "2.5-M3"
   Seq(
+    "org.springframework" % "spring-web" % "3.2.0.RELEASE",
     "org.scalatest"     %% "scalatest"          % "1.7.2"           % "test",
     "org.slf4j"         %  "slf4j-log4j12"      % "1.6.6",
     "net.liftweb"       %% "lift-webkit"        % liftVersion        % "compile",
@@ -40,3 +41,4 @@ libraryDependencies ++= {
 }
 
 parallelExecution in Test := false
+

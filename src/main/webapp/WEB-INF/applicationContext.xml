@@ -15,23 +15,24 @@
     <context:annotation-config/>
 
     <!-- REST Connection to Neo4j server -->
-    <!--<bean id="graphDatabaseService" class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">-->
+    <!--<bean id="restGraphDatabase" class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">-->
         <!--<constructor-arg value="http://localhost:7474/db/data/" />-->
     <!--</bean>-->
 
-    <!-- local store, let's use this for unit tests -->
+    <!-- local store -->
     <bean id="graphDatabaseService" class="org.neo4j.kernel.EmbeddedGraphDatabase"
           destroy-method="shutdown">
         <constructor-arg index="0" value="target/tscore.db" />
     </bean>
 
+    <!-- Transaction mode for Neo4j -->
+    <tx:annotation-driven mode="aspectj"/>
+
     <!-- Neo4j configuration (creates Neo4jTemplate) -->
     <neo4j:config graphDatabaseService="graphDatabaseService" />
 
-    <!-- The neo4j repositories -->
+    <!-- Neo4j Repositories -->
     <neo4j:repositories base-package="org.tscore.trust.repository" />
-
-    <tx:annotation-driven mode="aspectj"/>
 
     <!-- Conversion Services for Neo4j -->
     <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">

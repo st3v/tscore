@@ -1,13 +1,11 @@
 package org.tscore.trust.model.score
 
-import org.tscore.graph.model.Score
-
 object NumericScore {
   implicit def toNumericScore[T](value: T)(implicit num: Numeric[T])= new NumericScore(value)
   implicit def fromNumericScore[T](score: NumericScore[T]) = score.asInstanceOf[T]
 }
 
-class NumericScore[T] (val value: T) (implicit num: Numeric[T]) extends Score with Numeric[NumericScore[T]] with Ordered[NumericScore[T]] {
+class NumericScore[T] (val value: T) (implicit num: Numeric[T]) extends Numeric[NumericScore[T]] with Ordered[NumericScore[T]] {
   def fromInt (n: Int) = new NumericScore(num.fromInt(n))
   def plus (x: NumericScore[T], y: NumericScore[T]) = new NumericScore(num.plus(x, y))
   def minus (x: NumericScore[T], y: NumericScore[T]) = new NumericScore(num.minus(x,y))
