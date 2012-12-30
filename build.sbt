@@ -1,3 +1,7 @@
+import com.typesafe.startscript.StartScriptPlugin
+
+seq(StartScriptPlugin.startScriptForClassesSettings: _*)
+
 name := "tscore"
  
 organization := "org.kiva"
@@ -28,12 +32,14 @@ libraryDependencies ++= {
   val liftVersion = "2.5-M3"
   Seq(
     "org.springframework" % "spring-web" % "3.2.0.RELEASE",
-    "org.scalatest"     %% "scalatest"          % "1.7.2"           % "test",
+    "org.scalatest"     %% "scalatest"          % "1.7.2"            % "test",
     "org.slf4j"         %  "slf4j-log4j12"      % "1.6.6",
     "net.liftweb"       %% "lift-webkit"        % liftVersion        % "compile",
     "net.liftmodules"   %% "lift-jquery-module" % (liftVersion + "-2.0"),
-    "org.eclipse.jetty" % "jetty-webapp"        % "8.1.7.v20120910"  % "container,test",
-    "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container,test" artifacts Artifact("javax.servlet", "jar", "jar"),
+    "org.eclipse.jetty" % "jetty-webapp"        % "8.1.7.v20120910"  % "container,test,compile",
+    "org.eclipse.jetty" % "jetty-server"        % "8.1.7.v20120910"  % "container,test,compile",
+    "org.eclipse.jetty" % "jetty-servlet"       % "8.1.7.v20120910"  % "container,test,compile",
+    "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container,test,compile" artifacts Artifact("javax.servlet", "jar", "jar"),
     "org.specs2"        %% "specs2"             % "1.12.1"           % "test",
     "com.fasterxml.jackson.core" % "jackson-core" % "2.1.1",
     "com.fasterxml.jackson.module" % "jackson-module-scala" % "2.1.2"
