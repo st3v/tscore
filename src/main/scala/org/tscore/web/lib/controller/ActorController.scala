@@ -19,9 +19,9 @@ object ActorController {
 
   implicit def doubleToActorScore(in: Double): ActorScore = new ActorScore(in)
 
-  implicit def doubleOptionToEndorsementScoreOption(in: Option[Double]): Option[ActorScore] = in match {
+  implicit def doubleOptionToActorScoreOption(in: Option[Double]): Option[ActorScore] = in match {
     case Some(s) => Some(doubleToActorScore(s))
-    case None => null
+    case None => None
   }
 
   implicit def toActor(in: org.tscore.trust.model.Actor): Actor = {

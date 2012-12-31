@@ -1,4 +1,4 @@
-package org.tscore.graph.util
+package org.tscore.trust.model.score.util
 
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility
 
 
-trait Json {
+trait JsonHelper {
   private val mapper = new ObjectMapper()
 
   mapper.registerModule(DefaultScalaModule)
@@ -22,4 +22,4 @@ trait Json {
   }
 }
 
-object Json extends Json
+object JsonHelper extends JsonHelper

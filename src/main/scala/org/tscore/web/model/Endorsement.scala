@@ -6,6 +6,8 @@ import common._
 import json._
 import scala.xml.Node
 import org.tscore.web.lib.controller.EndorsementController
+import scala.util.control.Exception._
+import scala.Some
 
 //An endorsement among endorsements
 case class Endorsement(id: Option[Long], actorId: Long, subjectId: Long, score: Option[Int])
@@ -17,7 +19,7 @@ object Endorsement {
   /**
    * Convert a JValue to a Endorsement if possible
    */
-  def apply(in: JValue): Box[Endorsement] = Helpers.tryo{in.extract[Endorsement]}
+  def apply(in: JValue): Option[Endorsement] = catching(classOf[Exception]).opt(in.extract[Endorsement])
 
   /**
    * Extract a Long (id) to a Endorsement

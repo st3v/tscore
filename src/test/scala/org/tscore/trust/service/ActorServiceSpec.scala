@@ -1,9 +1,8 @@
 package org.tscore.trust.service
 
-import org.tscore.trust.service.impl.ActorService
-import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FunSuite}
+import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll}
 import org.springframework.context.support.GenericXmlApplicationContext
-import org.tscore.trust.repository.ActorRepository
+import org.tscore.trust.service.repository.ActorRepository
 import org.tscore.trust.model.score.ActorScore
 import org.tscore.TestSuite
 
@@ -13,7 +12,7 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
   var actorRepository: ActorRepository = null
 
   override def beforeAll() {
-    ctx = new GenericXmlApplicationContext("classpath*:/META-INF/spring/module-context-trust-test.xml")
+    ctx = new GenericXmlApplicationContext("classpath*:/META-INF/spring/module-context-test-trust.xml")
     service = ctx.getBean(classOf[ActorServiceTrait])
     actorRepository = ctx.getBean(classOf[ActorRepository])
   }

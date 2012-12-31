@@ -18,7 +18,7 @@ abstract class AbstractRepositorySpec extends TestSuite with BeforeAndAfterAll w
    * Open application context before first test.
    */
   override def beforeAll() {
-    ctx = new GenericXmlApplicationContext("classpath*:/META-INF/spring/module-context-graph-test.xml")
+    ctx = new GenericXmlApplicationContext("classpath*:/META-INF/spring/module-context-test-graph.xml")
   }
 
   /**

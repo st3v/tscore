@@ -2,7 +2,7 @@ package org.tscore.trust.model.score
 
 import org.springframework.core.convert.converter.Converter
 import org.springframework.core.convert.converter.ConverterFactory
-import org.tscore.graph.util.Json
+import util.JsonHelper._
 
 /**
  * TrustScore trait represents scores on Endorsements and Actors.
@@ -20,7 +20,7 @@ class StringToTrustScoreConverter extends ConverterFactory[String, TrustScore] {
 
   class StringToScoreConverter[T <: TrustScore] extends Converter[String, T] {
     def convert(source: String): T = {
-      Json.parse(source, classOf[TrustScore]).asInstanceOf[T]
+      parse(source, classOf[TrustScore]).asInstanceOf[T]
     }
   }
 }
@@ -35,7 +35,7 @@ class TrustScoreToStringConverter extends ConverterFactory[TrustScore, String] {
 
   class ScoreToStringConverter[T <: String] extends Converter[TrustScore, T] {
     def convert(source: TrustScore) = {
-      Json.generate(source).asInstanceOf[T]
+      generate(source).asInstanceOf[T]
     }
   }
 }

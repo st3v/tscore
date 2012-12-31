@@ -35,6 +35,7 @@ libraryDependencies ++= {
     "org.scalatest"     %% "scalatest"          % "1.7.2"            % "test",
     "org.slf4j"         %  "slf4j-log4j12"      % "1.6.6",
     "net.liftweb"       %% "lift-webkit"        % liftVersion        % "compile",
+    "net.liftweb"       %% "lift-testkit"       % liftVersion        % "test",
     "net.liftmodules"   %% "lift-jquery-module" % (liftVersion + "-2.0"),
     "org.eclipse.jetty" % "jetty-webapp"        % "8.1.7.v20120910"  % "container,test,compile",
     "org.eclipse.jetty" % "jetty-server"        % "8.1.7.v20120910"  % "container,test,compile",

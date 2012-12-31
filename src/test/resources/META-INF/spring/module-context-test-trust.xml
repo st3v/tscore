@@ -29,7 +29,7 @@
     <neo4j:config graphDatabaseService="graphDatabaseService" />
 
     <!-- The neo4j repositories -->
-    <neo4j:repositories base-package="org.tscore.trust.repository" />
+    <neo4j:repositories base-package="org.tscore.trust.service.repository" />
 
     <tx:annotation-driven mode="aspectj"/>
 

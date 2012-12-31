@@ -26,13 +26,13 @@
     </bean>
 
     <!-- Transaction mode for Neo4j -->
-    <tx:annotation-driven mode="aspectj"/>
+    <tx:annotation-driven mode="proxy" transaction-manager="neo4jTransactionManager"/>
 
     <!-- Neo4j configuration (creates Neo4jTemplate) -->
     <neo4j:config graphDatabaseService="graphDatabaseService" />
 
     <!-- Neo4j Repositories -->
-    <neo4j:repositories base-package="org.tscore.trust.repository" />
+    <neo4j:repositories base-package="org.tscore.trust.service.repository" />
 
     <!-- Conversion Services for Neo4j -->
     <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">

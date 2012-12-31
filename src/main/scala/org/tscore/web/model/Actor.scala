@@ -6,6 +6,8 @@ import json._
 import scala.xml.Node
 import org.tscore.web.lib.controller.ActorController
 import util.Helpers
+import scala.util.control.Exception._
+import scala.Some
 
 //A subject among subjects
 case class Actor(id: Option[Long] = None,
@@ -21,7 +23,7 @@ object Actor {
   /**
    * Convert a JValue to a Subject if possible
    */
-  def apply(in: JValue): Box[Actor] = Helpers.tryo({in.extract[Actor]})
+  def apply(in: JValue): Option[Actor] = catching(classOf[Exception]).opt(in.extract[Actor])
 
 
   /**

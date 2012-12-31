@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller
 import org.tscore.trust.service.SubjectServiceTrait
 import scala.Some
 import org.tscore.web.model.Subject
+import org.springframework.transaction.annotation.Transactional
 
 class SubjectController {}
 
@@ -35,7 +36,9 @@ object SubjectController {
   }
 
   //Get all subjects
-  def allSubjects: Seq[Subject] = subjectService.getAllSubjects
+  def allSubjects: Seq[Subject] = {
+    subjectService.getAllSubjects
+  }
 
   //Find a Subject by ID
   def find(id: Long): Box[Subject] = {
@@ -51,6 +54,7 @@ object SubjectController {
   }
 
   //Deletes the subject with id and returns the deleted subject or Empty if there's no match
+  @Transactional
   def delete(id: Long): Box[Subject] = subjectService.deleteSubject(id)
 
   //Add an onChange listener

@@ -1,11 +1,9 @@
 package org.tscore.web.model
 
-import net.liftweb._
-import common._
-import json._
+import net.liftweb.json._
 import scala.xml.Node
 import org.tscore.web.lib.controller.SubjectController
-import util.Helpers
+import scala.util.control.Exception._
 
 //A subject among subjects
 case class Subject(id: Option[Long] = None,
@@ -20,7 +18,7 @@ object Subject {
   /**
    * Convert a JValue to a Subject if possible
    */
-  def apply(in: JValue): Box[Subject] = Helpers.tryo({in.extract[Subject]})
+  def apply(in: JValue): Option[Subject] = catching(classOf[Exception]).opt(in.extract[Subject])
 
 
   /**

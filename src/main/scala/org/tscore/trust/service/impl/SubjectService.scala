@@ -1,10 +1,11 @@
 package org.tscore.trust.service.impl
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.tscore.trust.repository.SubjectRepository
+import org.tscore.trust.service.repository.SubjectRepository
 import org.tscore.trust.model.Subject
 import org.tscore.trust.service.SubjectServiceTrait
 import scala.collection.JavaConversions._
+import org.springframework.transaction.annotation.Transactional
 
 class SubjectService extends SubjectServiceTrait {
   @Autowired
@@ -20,13 +21,10 @@ class SubjectService extends SubjectServiceTrait {
 
   def searchSubjectsByKeyword(keyword: String) = List[Subject]()
 
-  def addSubject(subject: Subject): Option[Subject] = {
-    if (subject.id != null && !repository.exists(subject.id)) {
-      subject.id = null
-    }
-    Option(repository.save(subject))
-  }
+  @Transactional
+  def addSubject(subject: Subject): Option[Subject] = Option(repository.save(subject))
 
+  @Transactional
   def deleteSubject(subjectId: Long): Option[Subject] = {
     findSubjectById(subjectId) match {
       case Some(subject) => {

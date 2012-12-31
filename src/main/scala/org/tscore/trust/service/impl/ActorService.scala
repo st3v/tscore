@@ -1,10 +1,11 @@
 package org.tscore.trust.service.impl
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.tscore.trust.repository.ActorRepository
 import org.tscore.trust.model.score.ActorScore
 import org.tscore.trust.model.Actor
 import org.tscore.trust.service.ActorServiceTrait
+import org.springframework.transaction.annotation.Transactional
+import org.tscore.trust.service.repository.ActorRepository
 import scala.collection.JavaConversions._
 
 class ActorService extends ActorServiceTrait {
@@ -25,6 +26,7 @@ class ActorService extends ActorServiceTrait {
 
   def searchActorsByKeyword(keyword: String): List[Actor] = List[Actor]()
 
+  @Transactional
   def addActor(actor: Actor): Option[Actor] = {
     if (actor.id != null && !repository.exists(actor.id)) {
       actor.id = null
@@ -32,6 +34,7 @@ class ActorService extends ActorServiceTrait {
     Option(repository.save(actor))
   }
 
+  @Transactional
   def deleteActor(actorId: Long): Option[Actor] = {
     findActorById(actorId) match {
       case Some(actor) => {
