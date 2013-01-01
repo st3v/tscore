@@ -1,4 +1,4 @@
-package org.tscore.web.lib.service
+package org.tscore.web.lib.service.impl
 
 import net.liftweb._
 import util._
@@ -8,11 +8,7 @@ import org.tscore.trust.model.{Subject, Actor, Endorsement}
 import org.tscore.trust.model.score.EndorsementScore
 import net.liftweb.util.Schedule
 
-class EndorsementServiceMock extends EndorsementServiceTrait {
-  var endorsements: List[Endorsement] = Nil
-
-  var listeners: List[Endorsement => Unit] = Nil
-
+class EndorsementServiceMock extends ServiceMock[Endorsement] with EndorsementServiceTrait {
   def createEndorsement(id: Option[Long],
                         actor: Actor,
                         subject: Subject,
@@ -26,17 +22,17 @@ class EndorsementServiceMock extends EndorsementServiceTrait {
   )
 
   def getAllEndorsements: Seq[Endorsement] = {
-    endorsements
+    repository
   }
 
   def findEndorsementById(endorsementId: Long): Option[Endorsement] = synchronized {
-    endorsements.find(_.id == endorsementId)
+    repository.find(_.id == endorsementId)
   }
 
   def addEndorsement(endorsement: Endorsement): Option[Endorsement] = synchronized {
     var result: Endorsement = null
     if (findEndorsementById(endorsement.id).isEmpty) {
-      endorsements ::= endorsement
+      repository ::= endorsement
       updateListeners(endorsement)
       result = endorsement
     }
@@ -46,7 +42,7 @@ class EndorsementServiceMock extends EndorsementServiceTrait {
   def deleteEndorsement(endorsementId: Long): Option[Endorsement] = synchronized {
     val endorsement: Option[Endorsement] = findEndorsementById(endorsementId)
     if (endorsement.isDefined) {
-      endorsements = endorsements.diff(List(endorsement.get))
+      repository = repository.diff(List(endorsement.get))
       updateListeners(endorsement.get)
     }
     endorsement

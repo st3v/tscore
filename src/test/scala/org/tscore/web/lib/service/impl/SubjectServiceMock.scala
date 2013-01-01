@@ -1,4 +1,4 @@
-package org.tscore.web.lib.service
+package org.tscore.web.lib.service.impl
 
 import net.liftweb._
 import util._
@@ -8,11 +8,7 @@ import net.liftweb.util.Schedule
 import org.tscore.trust.service.SubjectServiceTrait
 import org.tscore.trust.model.Subject
 
-class SubjectServiceMock extends SubjectServiceTrait {
-
-  var subjects: List[Subject] = Nil
-
-  var listeners: List[Subject => Unit] = Nil
+class SubjectServiceMock extends ServiceMock[Subject] with SubjectServiceTrait {
 
   def createSubject(id: Option[Long],
                     name: String,
@@ -21,22 +17,22 @@ class SubjectServiceMock extends SubjectServiceTrait {
   }
 
   def getAllSubjects: Seq[Subject] = {
-    subjects
+    repository
   }
 
   def findSubjectById(subjectId: Long): Option[Subject] = synchronized {
-    subjects.find(_.id == subjectId)
+    repository.find(_.id == subjectId)
   }
 
   def searchSubjectsByKeyword(keyword: String): Seq[Subject] = {
     val keywordLC = keyword.toLowerCase
-    subjects.filter(i => i.name.toLowerCase.indexOf(keywordLC) >= 0 || i.description.toLowerCase.indexOf(keywordLC) >= 0)
+    repository.filter(i => i.name.toLowerCase.indexOf(keywordLC) >= 0 || i.description.toLowerCase.indexOf(keywordLC) >= 0)
   }
 
   def addSubject(subject: Subject): Option[Subject] = synchronized {
     var result: Subject = null
     if (findSubjectById(subject.id).isEmpty) {
-      subjects ::= subject
+      repository ::= subject
       updateListeners(subject)
       result = subject
     }
@@ -46,7 +42,7 @@ class SubjectServiceMock extends SubjectServiceTrait {
   def deleteSubject(subjectId: Long): Option[Subject] = synchronized {
     val subject: Option[Subject] = findSubjectById(subjectId)
     if (subject.isDefined) {
-      subjects = subjects.diff(List(subject.get))
+      repository = repository.diff(List(subject.get))
       updateListeners(subject.get)
     }
     subject

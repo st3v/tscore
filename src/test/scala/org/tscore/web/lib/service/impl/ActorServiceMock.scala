@@ -1,4 +1,4 @@
-package org.tscore.web.lib.service
+package org.tscore.web.lib.service.impl
 
 import net.liftweb._
 import util._
@@ -9,11 +9,7 @@ import org.tscore.trust.service.ActorServiceTrait
 import org.tscore.trust.model.Actor
 import org.tscore.trust.model.score.ActorScore
 
-class ActorServiceMock extends ActorServiceTrait {
-
-  var actors: List[Actor] = Nil
-
-  var listeners: List[Actor => Unit] = Nil
+class ActorServiceMock extends ServiceMock[Actor] with ActorServiceTrait {
 
   def createActor(id: Option[Long],
                   name: String,
@@ -28,26 +24,26 @@ class ActorServiceMock extends ActorServiceTrait {
   )
 
   def getAllActors: Seq[Actor] = {
-    actors
+    repository
   }
 
   def findActorById(actorId: Long): Option[Actor] = synchronized {
-    actors.find(_.id == actorId)
+    repository.find(_.id == actorId)
   }
 
   def findActorByName(actorName: String) = synchronized {
-    actors.find(_.name == actorName)
+    repository.find(_.name == actorName)
   }
 
   def searchActorsByKeyword(keyword: String): Seq[Actor] = {
     val keywordLC = keyword.toLowerCase
-    actors.filter(i => i.name.toLowerCase.indexOf(keywordLC) >= 0 || i.description.toLowerCase.indexOf(keywordLC) >= 0)
+    repository.filter(i => i.name.toLowerCase.indexOf(keywordLC) >= 0 || i.description.toLowerCase.indexOf(keywordLC) >= 0)
   }
 
   def addActor(actor: Actor): Option[Actor] = synchronized {
     var result: Actor = null
     if (findActorById(actor.id).isEmpty) {
-      actors ::= actor
+      repository ::= actor
       updateListeners(actor)
       result = actor
     }
@@ -57,7 +53,7 @@ class ActorServiceMock extends ActorServiceTrait {
   def deleteActor(actorId: Long): Option[Actor] = synchronized {
     val actor: Option[Actor] = findActorById(actorId)
     if (actor.isDefined) {
-      actors = actors.diff(List(actor.get))
+      repository = repository.diff(List(actor.get))
       updateListeners(actor.get)
     }
     actor
