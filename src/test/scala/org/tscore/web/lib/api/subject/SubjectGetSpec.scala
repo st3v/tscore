@@ -5,7 +5,7 @@ import net.liftweb.mocks.MockHttpServletRequest
 import org.tscore.trust.model.Subject
 
 
-class GetSpec extends SubjectSpec {
+class SubjectGetSpec extends SubjectSpec {
   private val baseUrl = "http://tscore.org/api/subject"
   private var request = new MockHttpServletRequest(baseUrl)
 

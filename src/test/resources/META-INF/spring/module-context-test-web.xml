@@ -15,9 +15,9 @@
     <context:annotation-config/>
 
     <!-- Service Beans -->
-    <bean id="actorService" class="org.tscore.web.lib.service.ActorServiceMock" />
-    <bean id="subjectService" class="org.tscore.web.lib.service.SubjectServiceMock" />
-    <bean id="endorsementService" class="org.tscore.web.lib.service.EndorsementServiceMock" />
+    <bean id="actorService" class="org.tscore.web.lib.service.impl.ActorServiceMock" />
+    <bean id="subjectService" class="org.tscore.web.lib.service.impl.SubjectServiceMock" />
+    <bean id="endorsementService" class="org.tscore.web.lib.service.impl.EndorsementServiceMock" />
 
     <!-- Inject the Service Beans into our API models -->
     <context:component-scan base-package="org.tscore.web.lib.controller"/>

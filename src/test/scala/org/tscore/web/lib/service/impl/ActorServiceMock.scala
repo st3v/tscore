@@ -8,6 +8,7 @@ import net.liftweb.util.Schedule
 import org.tscore.trust.service.ActorServiceTrait
 import org.tscore.trust.model.Actor
 import org.tscore.trust.model.score.ActorScore
+import org.tscore.web.lib.service.ServiceMock
 
 class ActorServiceMock extends ServiceMock[Actor] with ActorServiceTrait {
 

@@ -7,6 +7,7 @@ import Helpers._
 import net.liftweb.util.Schedule
 import org.tscore.trust.service.SubjectServiceTrait
 import org.tscore.trust.model.Subject
+import org.tscore.web.lib.service.ServiceMock
 
 class SubjectServiceMock extends ServiceMock[Subject] with SubjectServiceTrait {
 

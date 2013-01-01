@@ -7,6 +7,7 @@ import org.tscore.trust.service.EndorsementServiceTrait
 import org.tscore.trust.model.{Subject, Actor, Endorsement}
 import org.tscore.trust.model.score.EndorsementScore
 import net.liftweb.util.Schedule
+import org.tscore.web.lib.service.ServiceMock
 
 class EndorsementServiceMock extends ServiceMock[Endorsement] with EndorsementServiceTrait {
   def createEndorsement(id: Option[Long],
