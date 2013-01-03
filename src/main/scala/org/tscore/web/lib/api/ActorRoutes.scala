@@ -93,5 +93,10 @@ object ActorRoutes extends RestHelper {
         ).map(ActorController.add(_).get)                                 // store the updated resource and cast result
         case _ => None
       }).map(a => a: JValue)
+
+    /**
+     * Every other request is invalid and should be served an empty response.
+     */
+    case _ => emptyToResp(Empty)
   })
 }

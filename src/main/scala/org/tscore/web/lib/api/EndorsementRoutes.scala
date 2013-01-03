@@ -77,5 +77,10 @@ object EndorsementRoutes extends RestHelper {
         case _ => None
       }).map(a => a: JValue)
 
+    /**
+     * Every other request is invalid and should be served an empty response.
+     */
+    case _ => emptyToResp(Empty)
+
   })
 }

@@ -12,9 +12,9 @@ class SubjectPutSpec extends SubjectSpec {
 
   // some subjects to test with
   val subjectId = 99
-  var subjectWithoutId = Subject(null, "Test1", "This is a test.")
-  var subjectWithExplicitId = Subject(subjectId, "Test2", "This is a test.")
-  var subjectWithoutDescription = Subject(null, "Test3", null)
+  var subjectWithoutId = Subject(null, "Test", "This is a test.")
+  var subjectWithExplicitId = Subject(subjectId, "Test", "This is a test.")
+  var subjectWithoutDescription = Subject(null, "Test", null)
   var subjectWithoutName = Subject(null, null, null)
 
   // empty repository
@@ -95,7 +95,7 @@ class SubjectPutSpec extends SubjectSpec {
         repository.size mustEqual 0
     }
 
-    "return nothing subject without name" withReqFor(request) withPut (subjectWithoutName) in {
+    "return nothing for subject without name" withReqFor(request) withPut (subjectWithoutName) in {
       req =>
         // initialize service with empty list
         repository.size mustEqual 0

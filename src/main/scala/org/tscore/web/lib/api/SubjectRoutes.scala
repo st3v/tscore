@@ -101,5 +101,6 @@ object SubjectRoutes extends RestHelper {
      * Every other request is invalid and should be served an empty response.
      */
     case _ => emptyToResp(Empty)
+
   })
 }

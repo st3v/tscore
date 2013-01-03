@@ -96,7 +96,7 @@ class SubjectPostSpec extends SubjectSpec {
         repository.head mustEqual newSubject
     }
 
-    "change name and return updated subject for repository that stores multiple subjects" withReqFor(endpointWithId) withPost (subjectDescriptionUpdate) in {
+    "change description and return updated subject for repository that stores multiple subjects" withReqFor(endpointWithId) withPost (subjectDescriptionUpdate) in {
       req =>
         for (i <- 1 until numSubjects+1) {
           if (i != subjectId)

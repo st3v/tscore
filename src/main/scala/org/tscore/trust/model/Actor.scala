@@ -12,6 +12,13 @@ class Actor extends org.tscore.graph.model.Actor  {
   var description: String = null
 
   var score: ActorScore = null
+
+  override def equals(obj:Any) : Boolean = {
+    super.equals(obj) &&
+      obj.asInstanceOf[Actor].name == this.name &&
+      obj.asInstanceOf[Actor].description == this.description &&
+      obj.asInstanceOf[Actor].score == this.score
+  }
 }
 
 object Actor {
@@ -19,11 +26,14 @@ object Actor {
             name: String,
             description: String = null,
             score: ActorScore = null) = {
-    val actor = new Actor()
-    if (id != null) actor.id = id
-    actor.name = name
-    actor.description = Option(description).getOrElse("")
-    actor.score = Option(score).getOrElse(ActorScore.zero)
+    var actor = null.asInstanceOf[Actor]
+    if (Option(name).isDefined) {
+      actor = new Actor()
+      actor.id = Option(id).getOrElse(null)
+      actor.name = name
+      actor.description = Option(description).getOrElse("")
+      actor.score = Option(score).getOrElse(ActorScore.zero)
+    }
     actor
   }
 }
