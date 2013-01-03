@@ -1,16 +1,12 @@
 package org.tscore.web.lib.api.subject
 
 import org.tscore.web.lib.api.SubjectSpec
-import net.liftweb.mocks.MockHttpServletRequest
 import org.tscore.trust.model.Subject
 
 
 class SubjectGetSpec extends SubjectSpec {
-  private val baseUrl = "http://tscore.org/api/subject"
-  private var request = new MockHttpServletRequest(baseUrl)
-
   private val numSubjects = 99
-  private val findSubjectId = 17
+  private val subjectId = 17
 
   "GET /api/subject" should {
 
@@ -21,7 +17,7 @@ class SubjectGetSpec extends SubjectSpec {
         repository.size mustEqual 0
 
         // serve the request and validate response
-        assertEmptyEntityList(serveJson(req))
+        assertEmptyEntityList(serve(req))
     }
 
     "return list with one subject" withReqFor(request) in {
@@ -31,7 +27,7 @@ class SubjectGetSpec extends SubjectSpec {
         repository.size mustEqual 1
 
         // serve the request and validate response
-        assertEqualsEntityList(serveJson(req), repository)
+        assertEqualsEntityList(serve(req), repository)
     }
 
     "return list with multiple subjects" withReqFor(request) in {
@@ -44,34 +40,34 @@ class SubjectGetSpec extends SubjectSpec {
         repository.size mustEqual numSubjects
 
         // serve the request and validate response
-        assertEqualsEntityList(serveJson(req), repository)
+        assertEqualsEntityList(serve(req), repository)
     }
 
   }
 
   "GET /api/subject/count" should {
 
-    "return zero for repository that stores nothing" withReqFor(baseUrl + "/count") in {
+    "return 0 for repository that stores nothing" withReqFor(endpoint + "/count") in {
       req =>
         // empty repository
         repository = Nil
 
         // serve the request and validate response
-        assertEqualsNumber(serveJson(req), 0)
+        assertEqualsNumber(serve(req), 0)
     }
 
-    "return one for repository that stores one subject" withReqFor(baseUrl + "/count") in {
+    "return 1 for repository that stores one subject" withReqFor(endpoint + "/count") in {
       req =>
         // initialize service with exactly one subject
         repository = Nil
-        repository ::= Subject(findSubjectId, "Subject", "This is a test.")
+        repository ::= Subject(subjectId, "Subject", "This is a test.")
         repository.size mustEqual 1
 
         // serve the request and validate response
-        assertEqualsNumber(serveJson(req), 1)
+        assertEqualsNumber(serve(req), 1)
     }
 
-    "return correct count for repository that stores many subjects" withReqFor(baseUrl + "/count") in {
+    "return correct count for repository that stores many subjects" withReqFor(endpoint + "/count") in {
       req =>
         // initialize service with numSubjects subjects
         repository = Nil
@@ -81,60 +77,58 @@ class SubjectGetSpec extends SubjectSpec {
         repository.size mustEqual numSubjects
 
         // serve the request and validate response
-        assertEqualsNumber(serveJson(req), numSubjects)
+        assertEqualsNumber(serve(req), numSubjects)
     }
 
-    "throw exception for path ending with a slash" withReqFor(baseUrl + "/count/") in {
+    "return nothing for path ending with a slash" withReqFor(endpoint + "/count/") in {
       req =>
-        // should throw exception
-        serveJson(req) must throwA[java.util.NoSuchElementException]
+        assertEmptyResponse(serve(req))
     }
 
-    "throw exception for malformed path" withReqFor(baseUrl + "/count/oopps") in {
+    "return nothing for malformed path" withReqFor(endpoint + "/count/oopps") in {
       req =>
-        // should throw exception
-        serveJson(req) must throwA[java.util.NoSuchElementException]
+        assertEmptyResponse(serve(req))
     }
 
   }
 
   "GET /api/subject/<id>" should {
 
-    "return nothing from repository that stores nothing" withReqFor(baseUrl + "/" + findSubjectId) in {
+    "return nothing from empty repository" withReqFor(endpoint + "/" + subjectId) in {
       req =>
         // empty repository
         repository = Nil
 
         // serve the request and validate response
-        assertEmptyResponse(req)
+        assertEmptyResponse(serve(req))
     }
 
-    "return nothing from repository that stores something" withReqFor(baseUrl + "/" + findSubjectId) in {
+    "return nothing for non-existing id" withReqFor(endpoint + "/" + subjectId) in {
       req =>
         // initialize service with numSubjects-1 subjects
         repository = Nil
         for (i <- 1 until numSubjects+1) {
-          if (i != findSubjectId)
+          if (i != subjectId)
             repository ::= Subject(i, "Subject_"+i, "This is subject #"+i)
         }
         repository.size mustEqual numSubjects-1
 
         // serve the request and validate response
-        assertEmptyResponse(req)
+        assertEmptyResponse(serve(req))
     }
 
-    "return single subject from repository that stores exactly one" withReqFor(baseUrl + "/" + findSubjectId) in {
+    "return single subject from repository that stores exactly one" withReqFor(endpoint + "/" + subjectId) in {
       req =>
         // initialize service with exactly one subject
         repository = Nil
-        repository ::= Subject(findSubjectId, "Subject", "This is a test.")
+        repository ::= Subject(subjectId, "Subject", "This is a test.")
         repository.size mustEqual 1
 
         // serve the request and validate response
-        assertEqualsEntity(serveJson(req), repository.find(_.id == findSubjectId).get)
+        assertEqualsEntity(serve(req), service.repository(subjectId))
     }
 
-    "return single subject from repository that stores many" withReqFor(baseUrl + "/" + findSubjectId) in {
+    "return single subject from repository that stores many" withReqFor(endpoint + "/" + subjectId) in {
       req =>
         // initialize service with numSubjects subjects
         repository = Nil
@@ -144,19 +138,22 @@ class SubjectGetSpec extends SubjectSpec {
         repository.size mustEqual numSubjects
 
         // serve the request and validate response
-        assertEqualsEntity(serveJson(req), repository.find(_.id == findSubjectId).get)
+        assertEqualsEntity(serve(req), service.repository(subjectId))
     }
 
-    "throw exception for invalid id" withReqFor(baseUrl + "/not-an-id") in {
+    "return nothing for invalid id" withReqFor(endpoint + "/not-an-id") in {
       req =>
-        // should throw exception
-        serveJson(req) must throwA[java.util.NoSuchElementException]
+        assertEmptyResponse(serve(req))
     }
 
-    "throw exception for missing id" withReqFor(baseUrl + "/") in {
+    "return nothing for missing id" withReqFor(endpoint + "/") in {
       req =>
-        // should throw exception
-        serveJson(req) must throwA[java.util.NoSuchElementException]
+        assertEmptyResponse(serve(req))
+    }
+
+    "return nothing for malformed path" withReqFor(endpoint + "/foo/" + subjectId) in {
+      req =>
+        assertEmptyResponse(serve(req))
     }
 
   }

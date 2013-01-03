@@ -3,7 +3,7 @@ package org.tscore.web.lib.controller
 import net.liftweb.common.{Empty, Full, Box}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import org.tscore.trust.service.ActorServiceTrait
+import org.tscore.trust.service.ActorService
 import scala.Some
 import org.tscore.web.model.Actor
 import org.tscore.trust.model.score.ActorScore
@@ -15,7 +15,7 @@ object ActorController {
   private implicit val formats = net.liftweb.json.DefaultFormats
 
   @Autowired
-  private var actorService: ActorServiceTrait = null
+  private var service: ActorService = null
 
   implicit def doubleToActorScore(in: Double): ActorScore = new ActorScore(in)
 
@@ -39,29 +39,29 @@ object ActorController {
   }
 
   implicit def fromActor(in: Actor): org.tscore.trust.model.Actor = {
-    actorService.createActor(in.id, in.name, in.description, in.score).get
+    service.create(in.id, in.name, in.description, in.score).get
   }
 
-  def allActors: Seq[Actor] = actorService.getAllActors
+  def allActors: Seq[Actor] = service.getAll
 
   def find(id: Long): Box[Actor] = {
-    actorService.findActorById(id)
+    service.find(id)
   }
 
-  def search(str: String): Seq[Actor] = actorService.searchActorsByKeyword(str)
+  def search(str: String): Seq[Actor] = service.search(str)
 
   def add(subject: Actor): Box[Actor] = {
-    actorService.addActor(subject)
+    service.add(subject)
   }
 
-  def delete(id: Long): Box[Actor] = actorService.deleteActor(id)
+  def delete(id: Long): Box[Actor] = service.delete(id)
 
   def onChange(f: Actor => Unit) {
     synchronized {
       def g(actor: org.tscore.trust.model.Actor) {
         f(actor)
       }
-      actorService.prependActorListener(g)
+      service.prependListener(g)
     }
   }
 }

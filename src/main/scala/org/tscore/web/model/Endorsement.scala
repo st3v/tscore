@@ -10,7 +10,7 @@ import scala.util.control.Exception._
 import scala.Some
 
 //An endorsement among endorsements
-case class Endorsement(id: Option[Long], actorId: Long, subjectId: Long, score: Option[Int])
+case class Endorsement(id: Option[java.lang.Long], actorId: Long, subjectId: Long, score: Option[Int])
 
 //The Endorsement companion object
 object Endorsement {
@@ -36,7 +36,7 @@ object Endorsement {
    * We needed to replicate it here because we
    * have overloaded unapply methods
    */
-  def unapply(in: Any): Option[(Option[Long], Long, Long, Option[Int])] = {
+  def unapply(in: Any): Option[(Option[java.lang.Long], Long, Long, Option[Int])] = {
     in match {
       case s: Endorsement => Some((s.id, s.actorId, s.subjectId, s.score))
       case _ => None

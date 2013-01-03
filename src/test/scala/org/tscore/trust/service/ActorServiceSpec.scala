@@ -7,18 +7,18 @@ import org.tscore.trust.model.score.ActorScore
 import org.tscore.TestSuite
 
 class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAfter {
-  var service: ActorServiceTrait = null
+  var service: ActorService = null
   var ctx: GenericXmlApplicationContext = null
-  var actorRepository: ActorRepository = null
+  var repository: ActorRepository = null
 
   override def beforeAll() {
     ctx = new GenericXmlApplicationContext("classpath*:/META-INF/spring/module-context-test-trust.xml")
-    service = ctx.getBean(classOf[ActorServiceTrait])
-    actorRepository = ctx.getBean(classOf[ActorRepository])
+    service = ctx.getBean(classOf[ActorService])
+    repository = ctx.getBean(classOf[ActorRepository])
   }
 
   before {
-    actorRepository.deleteAll()
+    repository.deleteAll()
   }
 
   override def afterAll() {
@@ -26,7 +26,7 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
   }
 
   test("create actor with name only") {
-    val actor = service.createActor(None, "Stev", None, None)
+    val actor = service.create(None, "Stev", None, None)
     assert(actor.isDefined)
     assert(actor.get.id == null)
     assert(actor.get.name == "Stev")
@@ -37,14 +37,14 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
   test("create and store actor with explicit id") {
     val requestedId = 9999
 
-    var actor = service.createActor(Some(requestedId), "Stev", None, None)
+    var actor = service.create(Some(requestedId), "Stev", None, None)
     assert(actor.isDefined)
     assert(actor.get.id == requestedId)
     assert(actor.get.name == "Stev")
     assert(actor.get.description == "")
     assert(actor.get.score == ActorScore.zero)
 
-    actor = service.addActor(actor.get)
+    actor = service.add(actor.get)
     assert(actor.isDefined)
     val actualId =  actor.get.id
     assert(actualId != requestedId)
@@ -52,10 +52,10 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
     assert(actor.get.description == "")
     assert(actor.get.score == ActorScore.zero)
 
-    actor = service.findActorById(requestedId)
+    actor = service.find(requestedId)
     assert(actor.isEmpty)
 
-    actor = service.findActorById(actualId)
+    actor = service.find(actualId)
     assert(actor.isDefined)
     assert(actor.get.id == actualId)
     assert(actor.get.name == "Stev")
@@ -65,7 +65,7 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
 
   test("create, store, find, and update single actor") {
     // create new actor
-    var actor = service.createActor(None, "Stev", Some("Description"), Some(2.0))
+    var actor = service.create(None, "Stev", Some("Description"), Some(2.0))
     assert(actor.isDefined)
     assert(actor.get.id == null)
     assert(actor.get.name == "Stev")
@@ -73,7 +73,7 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
     assert(actor.get.score == 2.0)
 
     // store the new actor
-    actor = service.addActor(actor.get)
+    actor = service.add(actor.get)
     assert(actor.isDefined)
     assert(actor.get.id >= 0)
     assert(actor.get.name == "Stev")
@@ -81,7 +81,7 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
     assert(actor.get.score == 2.0)
 
     val actorId = actor.get.id
-    var found = service.findActorById(actorId)
+    var found = service.find(actorId)
     assert(found.isDefined)
     assert(found.get.id == actorId)
     assert(found.get.name == "Stev")
@@ -89,7 +89,7 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
     assert(found.get.description == "Description")
 
     // fetch the stored actor and validate
-    found = service.findActorByName("Stev")
+    found = service.find("Stev")
     assert(found.isDefined)
     assert(found.get.id == actorId)
     assert(found.get.name == "Stev")
@@ -106,7 +106,7 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
     assert(actor.get.score != found.get.score)
 
     // safe changes to actor
-    actor = service.addActor(actor.get)
+    actor = service.add(actor.get)
     assert(actor.isDefined)
     assert(actor.get.id == actorId)
     assert(actor.get.name == "Stev")
@@ -114,7 +114,7 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
     assert(actor.get.score == -1)
 
     // re-fetch actor and validate changes
-    found = service.findActorById(actorId)
+    found = service.find(actorId)
     assert(found.isDefined)
     assert(found.get.id == actorId)
     assert(found.get.name == "Stev")
@@ -122,7 +122,7 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
     assert(found.get.score == actor.get.score)
 
     // re-fetch actor and validate changes
-    found = service.findActorByName("Stev")
+    found = service.find("Stev")
     assert(found.isDefined)
     assert(found.get.id == actorId)
     assert(found.get.name == "Stev")
@@ -148,7 +148,7 @@ class ActorServiceSpec extends TestSuite with BeforeAndAfterAll with BeforeAndAf
     assert(found.get.score >= new ActorScore(-2))
 
     // make sure there is a single actor inside the repository
-    val actors = service.getAllActors
+    val actors = service.getAll
     assert(actors.size == 1)
     assert(actors.head.id == actorId)
   }

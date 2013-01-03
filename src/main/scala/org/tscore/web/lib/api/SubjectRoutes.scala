@@ -54,7 +54,7 @@ object SubjectRoutes extends RestHelper {
      * If <id> is a proper ID this route returns the subject with that ID if it exists.
      * Otherwise it returns a 404.
      */
-    case Id(id) :: Nil JsonGet _ => SubjectController.find(id).map(a => a: JValue)
+    case AsLong(id) :: Nil JsonGet _ => SubjectController.find(id).map(a => a: JValue)
 
     /**
      * DELETE /subject/<id>
@@ -87,7 +87,7 @@ object SubjectRoutes extends RestHelper {
      *
      * Returns the updated subject if the update was successful. Otherwise this returns a 404.
      */
-    case Id(id) :: Nil JsonPost JsonWithoutId(json) -> _ =>
+    case AsLong(id) :: Nil JsonPost JsonWithoutId(json) -> _ =>
       (SubjectController.find(id) match {
         case Full(subject) =>
           (Subject(mergeJson(subject, json)) match {
@@ -97,5 +97,9 @@ object SubjectRoutes extends RestHelper {
         case _ => Empty
       }).map(a => a: JValue)
 
+    /**
+     * Every other request is invalid and should be served an empty response.
+     */
+    case _ => emptyToResp(Empty)
   })
 }

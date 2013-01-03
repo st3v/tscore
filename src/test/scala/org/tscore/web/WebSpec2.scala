@@ -189,6 +189,13 @@ abstract class WebSpec2(boot : () => Any = () => {}) extends Specification {
     }
 
     /**
+     * Modifies the request to PUT the given request body JSON.
+     */
+    def withDelete () = withMods { mockReq =>
+      mockReq.method = "DELETE"
+    }
+
+    /**
      * Allows you to specify your own modification function for the servlet request
      * prior to initialization.
      */

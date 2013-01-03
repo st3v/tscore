@@ -15,12 +15,12 @@ class Actor extends org.tscore.graph.model.Actor  {
 }
 
 object Actor {
-  def apply(id: Long = 0,
+  def apply(id: java.lang.Long = null,
             name: String,
             description: String = null,
             score: ActorScore = null) = {
     val actor = new Actor()
-    if (id>0) actor.id = id
+    if (id != null) actor.id = id
     actor.name = name
     actor.description = Option(description).getOrElse("")
     actor.score = Option(score).getOrElse(ActorScore.zero)

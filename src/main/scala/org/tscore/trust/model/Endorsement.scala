@@ -14,12 +14,12 @@ class Endorsement extends org.tscore.graph.model.Endorsement {
 }
 
 object Endorsement {
-  def apply(id: Long = 0,
+  def apply(id: java.lang.Long = null,
             actor: Actor,
             subject: Subject,
             score: EndorsementScore = null) = {
     val endorsement = new Endorsement()
-    if (id>0) subject.id = id
+    if (id != null) subject.id = id
     endorsement.actor = actor
     endorsement.subject = subject
     endorsement.score = Option(score).getOrElse(EndorsementScore.default)

@@ -45,9 +45,9 @@
     </bean>
 
     <!-- Service Beans -->
-    <bean id="actorService" class="org.tscore.trust.service.impl.ActorService" />
-    <bean id="subjectService" class="org.tscore.trust.service.impl.SubjectService" />
-    <bean id="endorsementService" class="org.tscore.trust.service.impl.EndorsementService" />
+    <bean id="actorService" class="org.tscore.trust.service.impl.ActorServiceImpl" />
+    <bean id="subjectService" class="org.tscore.trust.service.impl.SubjectServiceImpl" />
+    <bean id="endorsementService" class="org.tscore.trust.service.impl.EndorsementServiceImpl" />
 
     <!-- Inject the Service Beans into our API models -->
     <context:component-scan base-package="org.tscore.web.lib.controller"/>

@@ -6,7 +6,7 @@ import org.tscore.web.lib.controller.SubjectController
 import scala.util.control.Exception._
 
 //A subject among subjects
-case class Subject(id: Option[Long] = None,
+case class Subject(id: Option[java.lang.Long] = None,
                    name: String,
                    description: Option[String] = None) {
 }
@@ -38,7 +38,7 @@ object Subject {
    * We needed to replicate it here because we
    * have overloaded unapply methods
    */
-  def unapply(in: Any): Option[(Option[Long], String, Option[String])] = {
+  def unapply(in: Any): Option[(Option[java.lang.Long], String, Option[String])] = {
     in match {
       case s: Subject => Some((s.id, s.name, s.description))
       case _ => None

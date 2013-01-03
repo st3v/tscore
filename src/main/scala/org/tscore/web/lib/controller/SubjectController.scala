@@ -3,7 +3,7 @@ package org.tscore.web.lib.controller
 import net.liftweb.common.{Empty, Full, Box}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import org.tscore.trust.service.SubjectServiceTrait
+import org.tscore.trust.service.SubjectService
 import scala.Some
 import org.tscore.web.model.Subject
 import org.springframework.transaction.annotation.Transactional
@@ -15,7 +15,7 @@ object SubjectController {
   private implicit val formats = net.liftweb.json.DefaultFormats
 
   @Autowired
-  private var subjectService: SubjectServiceTrait = null
+  private var service: SubjectService = null
 
   implicit def toSubject(in: org.tscore.trust.model.Subject): Subject = {
     Subject(Option(in.id), in.name, Option(in.description))
@@ -32,30 +32,28 @@ object SubjectController {
   }
 
   implicit def fromSubject(in: Subject): org.tscore.trust.model.Subject = {
-    subjectService.createSubject(in.id, in.name, in.description).get
+    service.create(in.id, in.name, in.description).get
   }
 
   //Get all subjects
-  def allSubjects: Seq[Subject] = {
-    subjectService.getAllSubjects
-  }
+  def allSubjects: Seq[Subject] = service.getAll
 
   //Find a Subject by ID
   def find(id: Long): Box[Subject] = {
-    subjectService.findSubjectById(id)
+    service.find(id)
   }
 
   //Find all the subjects with the string in their name or description
-  def search(str: String): Seq[Subject] = subjectService.searchSubjectsByKeyword(str)
+  def search(str: String): Seq[Subject] = service.search(str)
 
   //Add a subject
   def add(subject: Subject): Box[Subject] = {
-    subjectService.addSubject(subject)
+    service.add(subject)
   }
 
   //Deletes the subject with id and returns the deleted subject or Empty if there's no match
   @Transactional
-  def delete(id: Long): Box[Subject] = subjectService.deleteSubject(id)
+  def delete(id: Long): Box[Subject] = service.delete(id)
 
   //Add an onChange listener
   def onChange(f: Subject => Unit) {
@@ -63,7 +61,7 @@ object SubjectController {
       def g(subject: org.tscore.trust.model.Subject) {
         f(subject)
       }
-      subjectService.prependSubjectListener(g)
+      service.prependListener(g)
     }
   }
 

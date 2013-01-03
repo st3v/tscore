@@ -10,7 +10,7 @@ import scala.util.control.Exception._
 import scala.Some
 
 //A subject among subjects
-case class Actor(id: Option[Long] = None,
+case class Actor(id: Option[java.lang.Long] = None,
                  name: String,
                  description: Option[String] = None,
                  score: Option[Double] = None) {
@@ -38,7 +38,7 @@ object Actor {
     apply(in)
   }
 
-  def unapply(in: Any): Option[(Option[Long], String, Option[String], Option[Double])] = {
+  def unapply(in: Any): Option[(Option[java.lang.Long], String, Option[String], Option[Double])] = {
     in match {
       case a: Actor => Some((a.id, a.name, a.description, a.score))
       case _ => None

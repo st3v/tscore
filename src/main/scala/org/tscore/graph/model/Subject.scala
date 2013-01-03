@@ -31,7 +31,7 @@ class Subject {
   def receivedEndorsements : Iterable[Endorsement] = iterableAsScalaIterable(incoming)
 
   override def equals(obj:Any) : Boolean = {
-    obj.isInstanceOf[Subject] && obj.asInstanceOf[Subject].id == this.id
+    obj.isInstanceOf[Subject] && obj.asInstanceOf[Subject].id == this.id && obj.asInstanceOf[Subject].id == this.id
   }
 
   override def toString : String = "%s:%s".format(this.getClass.getSimpleName, id)
