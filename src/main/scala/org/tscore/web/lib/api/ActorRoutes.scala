@@ -8,6 +8,7 @@ import org.tscore.web.model.Actor
 import org.tscore.web.lib.controller.ActorController
 import util.Helper._
 import net.liftweb.common.{Empty, Full}
+import net.liftweb.util.BasicTypesHelpers.AsLong
 
 object ActorRoutes extends RestHelper {
 
@@ -53,7 +54,7 @@ object ActorRoutes extends RestHelper {
      * If <id> is a proper ID this route returns the actor with that ID if it exists.
      * Otherwise it returns a 404.
      */
-    case Id(id) :: Nil JsonGet _ => ActorController.find(id).map(a => a: JValue)
+    case AsLong(id) :: Nil JsonGet _ => ActorController.find(id).map(a => a: JValue)
 
     /**
      * DELETE /actor/<id>
@@ -62,7 +63,7 @@ object ActorRoutes extends RestHelper {
      *
      * Returns the deleted actor, if a actor with <id> existed. Otherwise this returns a 404.
      */
-    case Id(id) :: Nil JsonDelete _ => ActorController.delete(id).map(a => a: JValue)
+    case AsLong(id) :: Nil JsonDelete _ => ActorController.delete(id).map(a => a: JValue)
 
     /**
      * PUT /actor
@@ -86,7 +87,7 @@ object ActorRoutes extends RestHelper {
      *
      * Returns the updated actor if the update was successful. Otherwise this returns a 404.
      */
-    case Id(id) :: Nil JsonPost JsonWithoutId(json) -> _ =>
+    case AsLong(id) :: Nil JsonPost JsonWithoutId(json) -> _ =>
       (ActorController.find(id) match {                                   // find existing resource and cast it to JSON
         case Full(actor) => Actor(                                        // create bean from the merged JSON
           mergeJson(actor,json)                                           // merge existing JSON w/ the new one

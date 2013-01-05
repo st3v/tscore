@@ -7,6 +7,7 @@ import org.tscore.web.model.{Subject, Endorsement}
 import org.tscore.web.lib.controller.{SubjectController, EndorsementController}
 import util.Helper._
 import net.liftweb.common.{Empty, Full}
+import net.liftweb.util.BasicTypesHelpers.AsLong
 
 object EndorsementRoutes extends RestHelper {
 
@@ -69,12 +70,14 @@ object EndorsementRoutes extends RestHelper {
      *
      * Returns the updated endorsement if the update was successful. Otherwise this returns a 404.
      */
-    case Id(id) :: Nil JsonPost JsonWithoutId(json) -> _ =>
-      (EndorsementController.find(id) match {                                   // find existing resource and cast it to JSON
-        case Full(endorsement) => Endorsement(                                  // create bean from the merged JSON
-          mergeJson(endorsement,json)                                           // merge existing JSON w/ the new one
-        ).map(EndorsementController.add(_).get)                                 // store the updated resource and cast result
-        case _ => None
+    case AsLong(id) :: Nil JsonPost JsonWithoutId(json) -> _ =>
+      (EndorsementController.find(id) match {
+        case Full(endorsement) =>
+          (Endorsement(mergeJson(endorsement, json)) match {
+            case Some(s) => EndorsementController.add(s)
+            case _ => Empty
+          })
+        case _ => Empty
       }).map(a => a: JValue)
 
     /**
